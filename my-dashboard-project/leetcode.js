@@ -1,11 +1,11 @@
 let url = 'https://leetcode-api-faisalshohag.vercel.app/';
 let useridElement = document.getElementsByClassName('user-handle');
-let imgContainer = document.querySelector('#anshul');
-let url2 = 'https://leetcard.jacoblin.cool/?theme=chartreuse&font=BenchNine&ext=contest';
+let contestarray = document.querySelector('#anshul');
+let url2 = 'https://alfa-leetcode-api.onrender.com//contest';
 if (useridElement.length > 0) {
     let userid = useridElement[0].innerText.trim(); 
     url = url + userid;
-    url2 = `https://leetcard.jacoblin.cool/${userid}?theme=chartreuse&font=BenchNine&ext=contest`;
+    url2 = `https://alfa-leetcode-api.onrender.com/${userid}/contest`;
     console.log(url);
 }
 
@@ -34,16 +34,20 @@ let assignValue = async () => {
     drawChart();  // Now call the chart function **after** updating values
 };
 
-let fetchCard=async()=>{
-    let x = await fetch(url2); 
-    console.log(url2);
-    let svgContent = await x.text();
-    console.log(svgContent);
-    imgContainer.innerHTML = svgContent;
+let fetchContest=async()=>{
+  let cur = await fetch(url2);
+  let data = await cur.json();
+  console.log(cur);
+  document.getElementById("contest-rating").textContent=data.contestRating;
+  document.getElementById("global-rank").textContent=data.contestGlobalRanking;
+  document.getElementById("top-percent").textContent=data.contestTopPercentage;
+
+  let ratings = data.contestParticipation.map(contest => contest.rating);
+  contestarray.textContent=ratings;
 }
 
 assignValue();
-fetchCard();
+fetchContest();
 
 // Function to draw the chart
 const drawChart = () => {
