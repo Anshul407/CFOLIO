@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Codeforces Dashboard</title>
+  <!-- Link to your CSS -->
+  <link rel="stylesheet" href="codeforces.css" />
+</head>
+<body>
+
+  <!-- SIDEBAR (identical to LeetCode, except Codeforces is active) -->
+  <nav class="sidebar expanded" id="sidebar">
+    <!-- Toggle Button (using sidebar.jpg as the icon) -->
+    <button class="toggle-btn" id="toggleBtn">
+      <img src="sidebar.jpg" alt="Toggle Sidebar" class="toggle-icon" />
+    </button>
+
+    <!-- User Profile Info -->
+    <div class="profile-section">
+      <img src="profile.jpg" alt="Profile" class="profile-pic" />
+      <h2 class="username">Samudra</h2>
+      <p class="user-handle">uncorded_sam</p>
+      <p class="user-rank">Rank: 275,986</p>
+    </div>
+
+    <!-- Navigation Links -->
+    <ul class="nav-links">
+      <li>
+        <a href="leetcode.html">
+          <img src="lc.png" alt="LeetCode Icon" class="nav-icon" />
+          <span class="link-text">LeetCode</span>
+        </a>
+      </li>
+      <li>
+        <a href="codeforces.html" class="active">
+          <img src="cf.png" alt="Codeforces Icon" class="nav-icon" />
+          <span class="link-text">Codeforces</span>
+        </a>
+      </li>
+      <li>
+        <a href="overall.html">
+          <img src="ovr.png" alt="Overall Icon" class="nav-icon" />
+          <span class="link-text">Overall</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content" id="mainContent">
+    <header>
+      <h1>Codeforces Dashboard</h1>
+      <div class="rating-section">
+        <div class="rating-box">
+          <h3>Rating</h3>
+          <p id="cf-rating">--</p>
+        </div>
+        <div class="max-rating-box">
+          <h3>Max Rating</h3>
+          <p id="cf-max-rating">--</p>
+        </div>
+        <div class="rank-box">
+          <h3>Current Rank</h3>
+          <p id="cf-rank">--</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Stats Section -->
+    <section class="stats">
+      <div class="stat-card">
+        <h3>Total Problems Solved</h3>
+        <p id="total-problems">--</p>
+      </div>
+      <div class="stat-card">
+        <h3>Friends</h3>
+        <p id="friends-count">--</p>
+      </div>
+      <div class="stat-card">
+        <h3>Contributions</h3>
+        <p id="contribution">--</p>
+      </div>
+      <div class="stat-card">
+        <h3>Last Online</h3>
+        <p id="last-online">--</p>
+      </div>
+    </section>
+
+    <!-- Chart Section -->
+    <section class="chart-section">
+      <h2>Problem Difficulty Distribution</h2>
+      <canvas id="cfChart" width="400" height="200"></canvas>
+    </section>
+  </main>
+
+  <!-- Link to your JS -->
+  <script src="codeforces.js"></script>
+</body>
+</html>

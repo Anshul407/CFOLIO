@@ -1,0 +1,251 @@
+/* codeforces.css */
+
+/* 
+  Dark theme & sidebar identical to LeetCode’s page,
+  ensuring the same look & feel across both dashboards.
+*/
+:root {
+    --background-color: #1F1F1F;
+    --sidebar-color: #2A2A2A;
+    --text-color: #FFFFFF;
+    --accent-color: #F89C2C; /* or your preferred accent color */
+    --card-bg-color: #333333;
+    --transition-speed: 0.3s;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+  
+  /* SIDEBAR (same as LeetCode) */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 70px; /* compressed by default */
+    background-color: var(--sidebar-color);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: width var(--transition-speed) ease;
+    z-index: 100;
+    padding: 10px;
+  }
+  
+  /* Expanded sidebar */
+  .sidebar.expanded {
+    width: 220px;
+  }
+  
+  /* Toggle Button */
+  .toggle-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin: 0 auto;
+  }
+  
+  .toggle-icon {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+  }
+  
+  /* Profile Section */
+  .profile-section {
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: 20px;
+  }
+  
+  .profile-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 8px;
+  }
+  
+  .username {
+    font-size: 1rem;
+    margin-bottom: 4px;
+  }
+  
+  .user-handle {
+    font-size: 0.9rem;
+    color: #cccccc;
+  }
+  
+  .user-rank {
+    font-size: 0.85rem;
+    color: #cccccc;
+  }
+  
+  /* Hide text in profile if sidebar is compressed */
+  .sidebar:not(.expanded) .username,
+  .sidebar:not(.expanded) .user-handle,
+  .sidebar:not(.expanded) .user-rank {
+    display: none;
+  }
+  
+  /* Navigation Links */
+  .nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .nav-links li {
+    margin-bottom: 10px;
+  }
+  
+  /* Each nav link (icon + text) */
+  .nav-links a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #ccc;
+    padding: 8px 10px;
+    border-radius: 4px;
+    transition: background-color var(--transition-speed) ease;
+  }
+  
+  .nav-links a:hover {
+    background-color: #3a3a3a;
+  }
+  
+  .nav-links a.active {
+    background-color: var(--accent-color);
+    color: #fff;
+  }
+  
+  .nav-icon {
+    width: 25px;
+    height: 25px;
+    margin-right: 8px;
+  }
+  
+  /* Hide link text if sidebar is not expanded */
+  .sidebar:not(.expanded) .link-text {
+    display: none;
+  }
+  
+  /* MAIN CONTENT */
+  .main-content {
+    margin-left: 70px; /* compressed sidebar width */
+    padding: 20px;
+    transition: margin-left var(--transition-speed) ease;
+  }
+  
+  /* Shift main content when sidebar is expanded */
+  .sidebar.expanded ~ .main-content {
+    margin-left: 220px;
+  }
+  
+  /* HEADER */
+  header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  
+  header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  /* RATING SECTION */
+  .rating-section {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .rating-section > div {
+    background-color: var(--card-bg-color);
+    border-radius: 8px;
+    padding: 10px 15px;
+    text-align: center;
+    min-width: 100px;
+  }
+  
+  .rating-section h3 {
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+    color: #ccc;
+  }
+  
+  .rating-section p {
+    font-size: 1rem;
+    color: var(--accent-color);
+  }
+  
+  /* STATS SECTION */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .stat-card {
+    background-color: var(--card-bg-color);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .stat-card h3 {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    color: #ccc;
+  }
+  
+  .stat-card p {
+    font-size: 1.4rem;
+    margin: 0;
+    color: var(--accent-color);
+  }
+  
+  /* CHART SECTION */
+  .chart-section {
+    background-color: var(--card-bg-color);
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .chart-section h2 {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+  }
+  
+  /* RESPONSIVE (SMALLER SCREENS) */
+  @media screen and (max-width: 768px) {
+    .sidebar {
+      width: 60px;
+    }
+    .sidebar.expanded {
+      width: 180px;
+    }
+    .main-content {
+      margin-left: 60px;
+    }
+    .sidebar.expanded ~ .main-content {
+      margin-left: 180px;
+    }
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  
