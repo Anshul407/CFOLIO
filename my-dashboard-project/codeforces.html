@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Codeforces Dashboard</title>
+  <link rel="icon" href="assets/images/sidebar.jpg" type="image/jpeg">
+  <!-- Link to the Codeforces CSS file -->
+  <link rel="stylesheet" href="assets/css/codeforces.css" />
+</head>
+<body>
+
+  <!-- SIDEBAR (Same as LeetCode) -->
+  <nav class="sidebar" id="sidebar">
+    <button class="toggle-btn" id="toggleBtn">
+      <img src="assets/images/sidebar.jpg" alt="Toggle Sidebar" class="toggle-icon" />
+    </button>
+
+    <!-- User Profile Info -->
+    <div class="profile-section">
+      <img src="assets/images/profile.jpg" alt="Profile" class="profile-pic" />
+      <h2 class="username">Samudra</h2>
+      <p class="user-handle">uncorded_sam</p>
+      <p class="user-rank">Rank: 275,986</p>
+    </div>
+
+    <!-- Navigation Links -->
+    <ul class="nav-links">
+      <li>
+        <a href="overall.html">
+          <img src="assets/images/ovr.png" alt="Overall Icon" class="nav-icon" />
+          <span class="link-text">Overall</span>
+        </a>
+      </li>
+      <li>
+        <a href="LeetCode.html">
+          <img src="assets/images/lc.png" alt="LeetCode Icon" class="nav-icon" />
+          <span class="link-text">LeetCode</span>
+        </a>
+      </li>
+      <li>
+        <a href="codeforces.html" class="active">
+          <img src="assets/images/cf.png" alt="Codeforces Icon" class="nav-icon" />
+          <span class="link-text">Codeforces</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <header>
+      <h1>Codeforces Dashboard</h1>
+      <!-- Rating Info (Codeforces-style metrics) -->
+      <div class="rating-info">
+        <div class="rating">
+          <h3>Current Rating</h3>
+          <p id="current-rating">--</p>
+        </div>
+        <div class="max-rating">
+          <h3>Max Rating</h3>
+          <p id="max-rating">--</p>
+        </div>
+        <div class="user-rank">
+          <h3>Rank</h3>
+          <p id="user-rank">--</p>
+        </div>
+        <div class="contests-participated">
+          <h3>Contests</h3>
+          <p id="contests-participated">--</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- STATS SECTION -->
+    <section class="stats">
+      <div class="stat-card">
+        <h3>Div. 1 Contests</h3>
+        <p id="div1-contests">--</p>
+      </div>
+      <div class="stat-card">
+        <h3>Div. 2 Contests</h3>
+        <p id="div2-contests">--</p>
+      </div>
+      <div class="stat-card">
+        <h3>Div. 3 Contests</h3>
+        <p id="div3-contests">--</p>
+      </div>
+      <div class="stat-card">
+        <h3>Problems Solved</h3>
+        <p id="problems-solved">--</p>
+      </div>
+    </section>
+
+    <!-- CHART SECTION: Rating History -->
+    <section class="chart-section">
+      <h2>Rating History</h2>
+      <canvas id="ratingHistoryChart" width="400" height="200"></canvas>
+    </section>
+  </main>
+
+  <!-- Link to the Codeforces JavaScript file -->
+  <script src="assets/js/codeforces.js"></script>
+</body>
+</html>

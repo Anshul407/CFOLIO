@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Overall Dashboard</title>
+  <link rel="icon" href="assets/images/sidebar.jpg" type="image/jpeg">
+  <!-- Link to your Overall CSS file -->
+  <link rel="stylesheet" href="assets/css/overall.css" />
+</head>
+<body>
+
+  <!-- SIDEBAR (Same as LeetCode) -->
+  <nav class="sidebar" id="sidebar">
+    <button class="toggle-btn" id="toggleBtn">
+      <img src="assets/images/sidebar.jpg" alt="Toggle Sidebar" class="toggle-icon" />
+    </button>
+
+    <!-- User Profile Info -->
+    <div class="profile-section">
+      <img src="assets/images/profile.jpg" alt="Profile" class="profile-pic" />
+      <h2 class="username">Samudra</h2>
+      <p class="user-handle">uncorded_sam</p>
+      <p class="user-rank">Rank: 275,986</p>
+    </div>
+
+    <!-- Navigation Links -->
+    <ul class="nav-links">
+      <li>
+        <a href="overall.html" class="active">
+          <img src="assets/images/ovr.png" alt="Overall Icon" class="nav-icon" />
+          <span class="link-text">Overall</span>
+        </a>
+      </li>
+      <li>
+        <a href="LeetCode.html">
+          <img src="assets/images/lc.png" alt="LeetCode Icon" class="nav-icon" />
+          <span class="link-text">LeetCode</span>
+        </a>
+      </li>
+      <li>
+        <a href="codeforces.html">
+          <img src="assets/images/cf.png" alt="Codeforces Icon" class="nav-icon" />
+          <span class="link-text">Codeforces</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <header>
+      <h1>Overall Dashboard</h1>
+      <!-- Aggregated Metrics -->
+      <div class="rating-info">
+        <div class="rating">
+          <h3>Aggregate Rating</h3>
+          <p id="aggregate-rating">--</p>
+        </div>
+        <div class="global-rank">
+          <h3>Overall Ranking</h3>
+          <p id="overall-ranking">--</p>
+        </div>
+        <div class="top-percentile">
+          <h3>Top Percentile</h3>
+          <p id="top-percentile">--</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- STATS SECTION -->
+    <section class="stats">
+      <div class="stat-card">
+        <h3>Total Problems Solved</h3>
+        <p id="total-solved">--</p>
+      </div>
+      <div class="stat-card">
+        <h3>LeetCode Solved</h3>
+        <p id="leetcode-solved">--</p>
+      </div>
+      <div class="stat-card">
+        <h3>Codeforces Solved</h3>
+        <p id="codeforces-solved">--</p>
+      </div>
+      <div class="stat-card">
+        <h3>Other Platforms</h3>
+        <p id="other-solved">--</p>
+      </div>
+    </section>
+
+    <!-- CHART SECTION: Overall Performance -->
+    <section class="chart-section">
+      <h2>Overall Performance</h2>
+      <canvas id="overallChart" width="400" height="200"></canvas>
+    </section>
+  </main>
+
+  <!-- Link to your Overall JavaScript file -->
+  <script src="assets/js/overall.js"></script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>LeetCode Dashboard</title>
+    <!-- Favicon: displays the image at the browser tab -->
+    <link rel="icon" href="assets/images/sidebar.jpg" type="image/jpeg">
+    <!-- Link to your CSS file -->
+    <link rel="stylesheet" href="assets/css/leetcode.css" />
+  </head>
+<body>
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <button class="toggle-btn" id="toggleBtn">
+      <img src="assets/images/sidebar.jpg" alt="Toggle Sidebar" class="toggle-icon" />
+    </button>
+
+    <!-- User Profile Info -->
+    <div class="profile-section">
+      <img src="assets/images/profile.jpg" alt="Profile" class="profile-pic" />
+      <h2 class="username">Samudra</h2>
+      <p class="user-handle">Yawn_Sean</p>
+      <p class="user-rank">Rank: 275,986</p>
+    </div>
+
+    <!-- Navigation Links -->
+    <ul class="nav-links">
+      <li>
+        <a href="overall.html">
+          <img src="assets/images/ovr.png" alt="Overall Icon" class="nav-icon" />
+          <span class="link-text">Overall</span>
+        </a>
+      </li>
+      <li>
+        <a href="LeetCode.html" class="active">
+          <img src="assets/images/lc.png" alt="LeetCode Icon" class="nav-icon" />
+          <span class="link-text">LeetCode</span>
+        </a>
+      </li>
+      <li>
+        <a href="codeforces.html">
+          <img src="assets/images/cf.png" alt="Codeforces Icon" class="nav-icon" />
+          <span class="link-text">Codeforces</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <header class="header-container">
+      <div class="left-header">
+        <!-- LeetCode logo image -->
+        <a href="https://leetcode.com/" target="_blank">
+        <img src="assets/images/leetcode.png" alt="LeetCode Logo" class="leetcode-logo" />
+        </a>
+        <!-- Optional: You can include a small text "Dashboard" next to the logo if desired -->
+      </div>
+      <!-- Left side: Dashboard title -->
+      
+      <!-- Middle: Username Link -->
+      <div class="middle-username">
+        <a id="leetcode-profile-link" href="#" target="_blank">YourUsername</a>
+      </div>
+    
+      <!-- Right side: Rating Info -->
+      <div class="rating-info">
+        <div class="rating">
+          <h3>Contest Rating</h3>
+          <p id="contest-rating">--</p>
+        </div>
+        <div class="global-rank">
+          <h3>Global Ranking</h3>
+          <p id="global-rank">--</p>
+        </div>
+        <div class="top-percent">
+          <h3>Top</h3>
+          <p id="top-percent">--</p>
+        </div>
+      </div>
+    </header>
+    
+
+    <!-- Stats Section -->
+    <section class="stats">
+      <div class="stat-card">
+        <h3>Total Questions Solved</h3>
+        <p id="total-questions">--</p>
+      </div>
+      <div class="stat-card">
+        <h3>Easy</h3>
+        <p id="easy-count">--</p>
+      </div>
+      <div class="stat-card">
+        <h3>Medium</h3>
+        <p id="medium-count">--</p>
+      </div>
+      <div class="stat-card">
+        <h3>Hard</h3>
+        <p id="hard-count">--</p>
+      </div>
+    </section>
+
+    <!-- Chart and Card Section -->
+    <section class="chart-card-section">
+      <div class="chart-container">
+        <!-- Donut Chart Section -->
+        <div class="chart-section">
+          <h2>Difficulty Distribution</h2>
+          <div class="donut-chart-container">
+            <svg class="donut-chart" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
+              <circle class="donut-track" cx="100" cy="100" r="80"></circle>
+              <circle class="donut-segment easy-segment" cx="100" cy="100" r="80"></circle>
+              <circle class="donut-segment medium-segment" cx="100" cy="100" r="80"></circle>
+              <circle class="donut-segment hard-segment" cx="100" cy="100" r="80"></circle>
+            </svg>
+        
+            <div class="donut-center-text">
+              <div class="donut-total" id="donut-total">0</div>
+              <div class="donut-subtitle" id="donut-subtitle">Solved</div>
+            </div>
+        
+            <div class="donut-legend">
+              <div class="legend-item easy-legend">
+                <span class="legend-color"></span>
+                <span class="legend-label">Easy: <span id="easy-legend-count">0</span></span>
+              </div>
+              <div class="legend-item medium-legend">
+                <span class="legend-color"></span>
+                <span class="legend-label">Medium: <span id="medium-legend-count">0</span></span>
+              </div>
+              <div class="legend-item hard-legend">
+                <span class="legend-color"></span>
+                <span class="legend-label">Hard: <span id="hard-legend-count">0</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <!-- Contest Rating History Chart -->
+        <div class="chart-section">
+          <h2>Contest Rating History</h2>
+          <canvas id="contestLineChart" width="600" height="300"></canvas>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Link to your JS file -->
+  <script src="assets/js/leetcode.js"></script>
+</body>
+</html>
