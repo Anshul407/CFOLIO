@@ -1,26 +1,58 @@
 // codeforces.js
-
-// --- Data for Codeforces Metrics (Example values) ---
-const currentRating = 2100;
-const maxRating = 2300;
-const userRank = "Candidate Master";
-const contestsParticipated = 45;
-
-const div1Contests = 10;
-const div2Contests = 25;
-const div3Contests = 10;
-const problemsSolved = 120;
+let useridElement = document.getElementsByClassName('user-handle');
+let url = 'https://codeforces.com/api/user.info?handles=anshul407&checkHistoricHandles=false';
+let url2='https://codeforces.com/api/user.rating?handle=anshul407';
+let url3='https://codeforces.com/api/user.status?handle=anshul407';
+if (useridElement.length > 0) {
+  let userid = useridElement[0].innerText.trim(); 
+  
+  url = `https://codeforces.com/api/user.info?handles=${userid}&checkHistoricHandles=false`;
+  url2= `https://codeforces.com/api/user.rating?handle=${userid}`;
+  url3=`https://codeforces.com/api/user.status?handle=${userid}`;
+  console.log(url);
+}
 
 // Insert metrics into the DOM
-document.getElementById("current-rating").textContent = currentRating;
-document.getElementById("max-rating").textContent = maxRating;
-document.getElementById("user-rank").textContent = userRank;
-document.getElementById("contests-participated").textContent = contestsParticipated;
+let assignValue=async()=>{
+    let cur=await fetch(url);
+    let data=await cur.json();
+    document.getElementById("current-rating").textContent = data.result[0].rating;
+    console.log(data.result[2]);
+    document.getElementById("max-rating").textContent = data.result[0].maxRating;
+    document.getElementById("user-rank").textContent = data.result[0].rank;
+    await contestValue();
+    await userDetails();
 
-document.getElementById("div1-contests").textContent = div1Contests;
-document.getElementById("div2-contests").textContent = div2Contests;
-document.getElementById("div3-contests").textContent = div3Contests;
-document.getElementById("problems-solved").textContent = problemsSolved;
+}
+let rating;
+let contestValue=async()=>{
+  let cur=await fetch(url2);
+  let data=await cur.json();
+  document.getElementById("contests-participated").textContent = data.result.length;
+
+  document.getElementById("div1-contests").textContent = data.result.filter(contest => contest.contestName.includes("(Div. 1)")).length;
+  document.getElementById("div2-contests").textContent = data.result.filter(contest => contest.contestName.includes("(Div. 2)")).length;
+  document.getElementById("div3-contests").textContent = data.result.filter(contest => contest.contestName.includes("(Div. 3)")).length;
+
+  document.getElementById("anshulcontest").textContent = data.result?.map(item => item.newRating) || [];
+  rating=data.result?.map(item => item.newRating) || [];
+  // console.log(newRatings);
+
+}
+
+let userDetails=async()=>{
+  let cur=await fetch(url3);
+  let data=await cur.json();
+  const okSubmissions = data.result.filter(sub => sub.verdict === "OK");
+
+
+  const uniqueProblems = new Set(okSubmissions.map(sub => `${sub.problem.contestId}-${sub.problem.index}`));
+
+  document.getElementById("problems-solved").textContent = uniqueProblems.size;
+}
+assignValue();
+
+
 
 // --- Rating History Chart ---
 // Dummy rating history data (e.g., rating after each contest)

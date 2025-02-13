@@ -2,7 +2,6 @@ let url = 'https://leetcode-api-faisalshohag.vercel.app/';
 let useridElement = document.getElementsByClassName('user-handle');
 let url2 = 'https://alfa-leetcode-api.onrender.com//contest';
 
-// If there's a user-handle element, append the user ID to the API endpoints
 if (useridElement.length > 0) {
     let userid = useridElement[0].innerText.trim(); 
     url = url + userid;
