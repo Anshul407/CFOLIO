@@ -1,489 +1,211 @@
-/* leetcode.css */
+// Build API endpoints based on the user handle
+let url = 'https://leetcode-api-faisalshohag.vercel.app/';
+let useridElement = document.getElementsByClassName('user-handle');
+let url2 = 'https://alfa-leetcode-api.onrender.com//contest';
 
-/* 
-  Dark theme with orange accent (#F89C2C).
-  Adjust any of these variables to change colors.
-*/
-:root {
-  --background-color: #1F1F1F;
-  --sidebar-color: #2A2A2A;
-  --text-color: #FFFFFF;
-  --accent-color: #F89C2C;
-  --card-bg-color: #333333;
-  --transition-speed: 0.3s;
+if (useridElement.length > 0) {
+    let userid = useridElement[0].innerText.trim();
+    url = url + userid;
+    url2 = `https://alfa-leetcode-api.onrender.com/${userid}/contest`;
+    console.log(url);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+// Default fallback stats (if needed)
+const contestRating = 1584;
+const globalRank = "168,092 / 6,668,586";
+const topPercent = "25.16%";
+
+let easy = 0, medium = 0, hard = 0;
+
+// Fetch problem stats from API and update donut chart
+async function assignValue() {
+    try {
+        let cur = await fetch(url);
+        let data = await cur.json();
+
+        document.getElementById("total-questions").textContent = data.totalSolved;
+        document.getElementById("easy-count").textContent = data.easySolved;
+        document.getElementById("medium-count").textContent = data.mediumSolved;
+        document.getElementById("hard-count").textContent = data.hardSolved;
+
+        easy = data.easySolved;
+        medium = data.mediumSolved;
+        hard = data.hardSolved;
+
+        updateDonutChart(easy, medium, hard);
+    } catch (err) {
+        console.error("Error fetching problem stats:", err);
+    }
 }
 
-body {
-  background-color: var(--background-color);
-  color: var(--text-color);
+// Set the LeetCode profile link using the user handle
+let userHandleElement = document.querySelector(".user-handle");
+if (userHandleElement) {
+    let actualUsername = userHandleElement.innerText.trim();
+    let profileLink = document.getElementById("leetcode-profile-link");
+    if (profileLink) {
+        profileLink.href = `https://leetcode.com/u/${actualUsername}/`;
+        profileLink.textContent = actualUsername;
+    }
 }
 
-/* SIDEBAR */
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 70px; /* default collapsed width */
-  height: 100vh;
-  background-color: var(--sidebar-color);
-  padding: 10px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: width var(--transition-speed) ease;
-  z-index: 99;
+// Fetch contest stats from API, extract ratings, and render line chart
+async function fetchContest() {
+    try {
+        let cur = await fetch(url2);
+        let data = await cur.json();
+        console.log(cur);
+
+        document.getElementById("contest-rating").textContent = Math.round(data.contestRating);
+        document.getElementById("global-rank").textContent = data.contestGlobalRanking;
+        document.getElementById("top-percent").textContent = data.contestTopPercentage + "%";
+
+        // Extract ratings from contestParticipation array
+        let ratings = data.contestParticipation.map(contest => Math.round(contest.rating));
+        if (ratings.length > 30) {
+            ratings = ratings.slice(-30);
+        }
+        renderLineChart(ratings);
+    } catch (err) {
+        console.error("Error fetching contest stats:", err);
+    }
 }
 
-.sidebar.expanded {
-  width: 220px; /* expanded width */
+// Initiate data fetches
+assignValue();
+fetchContest();
+
+/**
+ * Updates the donut chart based on the counts for Easy, Medium, and Hard.
+ * On hover over a segment, updates the center text to show the percentage (to two decimals)
+ * and the segment label.
+ */
+function updateDonutChart(easy, medium, hard) {
+    const totalSolved = easy + medium + hard;
+    document.getElementById("donut-total").textContent = `${totalSolved}`;
+    document.getElementById("donut-subtitle").textContent = "Solved";
+
+    const RADIUS = 80;
+    const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+
+    const easyFrac = totalSolved === 0 ? 0 : easy / totalSolved;
+    const mediumFrac = totalSolved === 0 ? 0 : medium / totalSolved;
+    const hardFrac = totalSolved === 0 ? 0 : hard / totalSolved;
+
+    const easyArcLen = easyFrac * CIRCUMFERENCE;
+    const mediumArcLen = mediumFrac * CIRCUMFERENCE;
+    const hardArcLen = hardFrac * CIRCUMFERENCE;
+
+    const easyArc = document.querySelector(".easy-segment");
+    const mediumArc = document.querySelector(".medium-segment");
+    const hardArc = document.querySelector(".hard-segment");
+
+    if (easyArc && mediumArc && hardArc) {
+        easyArc.style.strokeDasharray = `${easyArcLen} ${CIRCUMFERENCE}`;
+        mediumArc.style.strokeDasharray = `${mediumArcLen} ${CIRCUMFERENCE}`;
+        hardArc.style.strokeDasharray = `${hardArcLen} ${CIRCUMFERENCE}`;
+
+        // Position arcs consecutively
+        mediumArc.style.strokeDashoffset = `-${easyArcLen}`;
+        hardArc.style.strokeDashoffset = `-${(easyArcLen + mediumArcLen)}`;
+
+        // Store values for tooltip and hover center text
+        easyArc.dataset.count = easy;
+        easyArc.dataset.label = "Easy";
+        mediumArc.dataset.count = medium;
+        mediumArc.dataset.label = "Medium";
+        hardArc.dataset.count = hard;
+        hardArc.dataset.label = "Hard";
+
+        // Attach hover listeners to update center text with two decimal precision
+        [easyArc, mediumArc, hardArc].forEach(segment => {
+            if (!segment.hasCenterTextListener) {
+                segment.addEventListener("mousemove", function(e) {
+                    const count = parseInt(this.dataset.count);
+                    const label = this.dataset.label;
+                    const percent = totalSolved === 0 ? 0 : ((count / totalSolved) * 100).toFixed(2);
+                    document.getElementById("donut-total").textContent = percent + "%";
+                    document.getElementById("donut-subtitle").textContent = label;
+                });
+                segment.addEventListener("mouseout", function() {
+                    document.getElementById("donut-total").textContent = totalSolved;
+                    document.getElementById("donut-subtitle").textContent = "Solved";
+                });
+                segment.hasCenterTextListener = true;
+            }
+        });
+    }
 }
 
-/* Toggle button */
-.toggle-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  margin-bottom: 20px;
-  align-self: flex-end;
-  transition: transform var(--transition-speed) ease;
-}
-
-.toggle-icon {
-  width: 32px;
-  height: 32px;
-}
-
-/* PROFILE SECTION */
-.profile-section {
-  text-align: center;
-  margin-bottom: 30px;
-  transition: opacity var(--transition-speed) ease;
-}
-
-.profile-pic {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  margin-bottom: 8px;
-}
-
-.username {
-  font-size: 1rem;
-  margin-bottom: 4px;
-}
-
-.user-handle,
-.user-rank {
-  font-size: 0.85rem;
-  color: #cccccc;
-}
-
-/* Hide user details if collapsed */
-.sidebar:not(.expanded) .profile-section .username,
-.sidebar:not(.expanded) .profile-section .user-handle,
-.sidebar:not(.expanded) .profile-section .user-rank {
-  display: none;
-}
-
-/* NAV LINKS */
-.nav-links {
-  list-style: none;
-  padding: 0;
-  flex: 1; /* push them to fill space */
-}
-
-.nav-links li {
-  margin-bottom: 15px;
-}
-
-.nav-links a {
-  display: flex;
-  align-items: center;
-  color: #cccccc;
-  text-decoration: none;
-  padding: 8px;
-  border-radius: 4px;
-  transition: background-color var(--transition-speed) ease;
-}
-
-.nav-links a.active {
-  background-color: var(--accent-color);
-  color: #fff;
-}
-
-.nav-links a:hover {
-  background-color: #383838;
-}
-
-.nav-icon {
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
-}
-
-/* Hide link text if collapsed */
-.sidebar:not(.expanded) .link-text {
-  display: none;
-}
-
-/* MAIN CONTENT */
-.main-content {
-  margin-left: 70px; /* match the default collapsed width */
-  padding: 20px;
-  transition: margin-left var(--transition-speed) ease;
-}
-
-/* If sidebar is expanded, push the main content */
-.sidebar.expanded ~ .main-content {
-  margin-left: 220px;
-}
-
-/* HEADER CONTAINER */
-header.header-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin-bottom: 30px;
-}
-
-/* Left side: Logo and Title */
-.left-header {
-  display: flex;
-  align-items: center;
-}
-
-.leetcode-logo {
-  height: 55px;       /* Adjust the height as needed */
-  width: auto;        /* Maintain aspect ratio */
-  margin-right: 250px; /* Space between logo and title */
-}
-
-.dashboard-title {
-  font-size: 1.5rem;
-  margin: 0;
-  color: var(--text-color);
-}
-
-/* Middle username container with dynamic translucent background */
-.middle-username {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  background: rgba(255, 255, 255, 0.1);  /* Mild translucent white */
-  padding: 8px 16px;
-  border-radius: 8px;
-  transition: background 0.3s ease, transform 0.3s ease;
-}
-
-/* Username link styling */
-.middle-username a {
-  color: #fff;                /* Start with white text */
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 1rem;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-/* Hover state for the username link */
-.middle-username a:hover {
-  color: #19c37d;             /* Change to a ChatGPT-like green on hover */
-  transform: scale(1.03);
-}
-
-/* Hover state for the container */
-.middle-username:hover {
-  background: rgba(255, 255, 255, 0.2);  /* Slightly more opaque on hover */
-  transform: scale(1.02);
-}
-
-
-/* Rating info on the right remains unchanged */
-.rating-info {
-  display: flex;
-  gap: 18px;
-  flex-wrap: wrap;
-}
-
-.rating-info > div {
-  background: linear-gradient(135deg, #2A2A2A, #3A3A3A);
-  border: 1px solid #444;
-  border-radius: 8px;
-  padding: 10px 15px;
-  text-align: center;
-  min-width: 80px; /* adjusted for a compact look */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.rating-info > div:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.rating-info h3 {
-  font-size: 0.8rem;
-  margin-bottom: 3px;
-  color: #bbbbbb;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.rating-info p {
-  font-size: 1.1rem;
-  margin: 0;
-  font-weight: bold;
-  color: var(--accent-color);
-}
-
-/* 2) REDUCE EMPTY SPACE AT BOTTOM */
-.main-content {
-  /* If you want less padding at the bottom of the entire page: */
-  padding-bottom: 0;
-}
-
-.chart-card-section {
-  /* Reduce bottom margin around chart sections */
-  margin-bottom: 10px;
-}
-
-.chart-container {
-  /* If you want to reduce spacing under the charts */
-  margin-bottom: 10px; 
-}
-
-/* If you have a large margin below .stats or .stat-card, tighten them: */
-.stats {
-  margin-bottom: 20px; /* was 30px; reduce if needed */
-}
-.stat-card {
-  margin-bottom: 0; /* if there's any bottom margin */
-}
-
-
-/* STATS SECTION */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 20px;
-  margin-bottom: 30px;
-}
-
-.stat-card {
-  padding: 20px;
-  text-align: center;
-}
-
-.stat-card h3 {
-  font-size: 0.9rem;
-  margin-bottom: 10px;
-  color: #cccccc;
-}
-
-.stat-card p {
-  font-size: 1.4rem;
-  margin: 0;
-  color: var(--accent-color);
-}
-
-/* CHART SECTION */
-.chart-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--card-bg-color);
-  padding: 12px;
-  border-radius: 8px;
-  text-align: center;
-  flex: 1 1 300px; /* can adjust if you want more/less height */
-}
-
-.chart-section h2 {
-  font-size: 1.1rem;
-  margin-bottom: 5px;
-}
-
-/* Chart container for aligning charts side by side */
-.chart-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-/* Chart Card Section spacing */
-.chart-card-section {
-  margin-top: 30px;
-  margin-bottom: 30px;
-}
-
-/* Responsive canvas inside chart section */
-.chart-section canvas {
-  width: 100% !important;
-  height: auto !important;
-  display: block;
-}
-
-/* ------------------ DONUT CHART ------------------ */
-.donut-chart-container {
-  position: relative;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.donut-chart {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Donut track */
-.donut-track {
-  fill: none;
-  stroke: #444;
-  stroke-width: 20;
-}
-
-/* Donut arcs */
-.donut-segment {
-  fill: none;
-  stroke-width: 20;
-  stroke-dasharray: 0 999;
-  stroke-dashoffset: 0;
-  transition: stroke-dasharray 0.5s ease, stroke 0.5s ease;
-}
-.easy-segment {
-  stroke: #4CAF50;
-}
-.medium-segment {
-  stroke: #FFC107;
-}
-.hard-segment {
-  stroke: #F44336;
-}
-
-/* Center text in donut */
-.donut-center-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  pointer-events: none;
-  color: #fff;
-}
-.donut-total {
-  font-size: 2rem;
-  font-weight: bold;
-}
-.donut-subtitle {
-  font-size: 0.9rem;
-  color: #aaa;
-}
-
-/* Legend below donut */
-.donut-legend {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  margin-top: 15px;
-  align-items: center;
-}
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: #fff;
-  font-size: 0.9rem;
-}
-.legend-color {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  border-radius: 3px;
-  background: #4CAF50;
-}
-.easy-legend .legend-color {
-  background: #4CAF50;
-}
-.medium-legend .legend-color {
-  background: #FFC107;
-}
-.hard-legend .legend-color {
-  background: #F44336;
-}
-
-/* ------------------ UNIFIED CARD STYLES & HOVER EFFECTS ------------------ */
-/* Apply the same gradient, border, and shadow to all major containers */
-.profile-section,
-.stat-card,
-.rating-info > div,
-.chart-section {
-  background: linear-gradient(135deg, #2A2A2A, #3A3A3A);
-  border: 1px solid #444;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* Lift the container on hover */
-.profile-section:hover,
-.stat-card:hover,
-.rating-info > div:hover,
-.chart-section:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-/* HEADINGS & TEXT in rating-info containers */
-.rating-info h3 {
-  font-size: 0.85rem;
-  margin-bottom: 4px;
-  color: #bbbbbb;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.rating-info p {
-  font-size: 1.2rem;
-  color: var(--accent-color);
-  font-weight: bold;
-  margin: 0;
-}
-
-/* ------------------ RESPONSIVE (SMALLER SCREENS) ------------------ */
-@media screen and (max-width: 768px) {
-  .sidebar {
-    width: 60px;
+/**
+ * Renders the line chart using ApexCharts with your ratings data and dark theme.
+ */
+function renderLineChart(ratings) {
+    var chartOptions = {
+      chart: {
+        type: 'line',
+        height: 400,
+        background: "transparent",       // Transparent background
+        foreColor: "#FFFFFF",            // White text for contrast
+        toolbar: {
+          show: false
+        },
+        animations: {
+          enabled: true,
+          easing: 'easeinout',
+          speed: 800
+        }
+      },
+      colors: ["#F89C2C"], // Classic LeetCode orange for the line
+      stroke: {
+        curve: 'smooth',
+        width: 2
+      },
+      series: [
+        {
+          name: 'Rating',
+          data: ratings
+        }
+      ],
+      markers: {
+        size: 6,
+        colors: ["#F89C2C"],        // Use accent color for markers
+        strokeColors: "#FFFFFF",     // White border for markers
+        strokeWidth: 2,
+        hover: {
+          size: 9
+        }
+      },
+      tooltip: {
+        theme: 'dark',
+        y: {
+          formatter: function(val) {
+            return val.toFixed(2);
+          }
+        }
+      },
+      grid: {
+        borderColor: '#444444'
+      },
+      xaxis: {
+        categories: ratings.map((_, i) => i + 1),
+        labels: {
+          style: {
+            colors: "#FFFFFF"
+          }
+        }
+      },
+      legend: {
+        position: 'top',
+        horizontalAlign: 'right',
+        offsetY: -10,
+        labels: {
+          colors: '#FFFFFF'
+        }
+      }
+    };
+  
+    var lineChart = new ApexCharts(document.querySelector('#contestLineChart'), chartOptions);
+    lineChart.render();
   }
-  .sidebar.expanded {
-    width: 200px;
-  }
-  .main-content {
-    margin-left: 60px;
-  }
-  .sidebar.expanded ~ .main-content {
-    margin-left: 200px;
-  }
-  header.header-container {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .chart-container {
-    flex-direction: column;
-    align-items: center;
-  }
-}
+  
