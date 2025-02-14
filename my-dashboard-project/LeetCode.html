@@ -28,7 +28,7 @@
           class="profile-pic"
         />
         <h2 class="username">Samudra</h2>
-        <p class="user-handle">Yawn_Sean</p>
+        <p class="user-handle">unordered_sam</p>
         <p class="user-rank">Rank: 275,986</p>
       </div>
 
@@ -133,42 +133,7 @@
 <!-- Donut Chart Section (No Legends) -->
 <div class="chart-section">
   <h2>Difficulty Distribution</h2>
-  <div class="modern-donut-container">
-    <svg class="modern-donut-chart" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
-      <defs>
-        <!-- Gradient for Easy segment -->
-        <defs>
-          <!-- Gradient for Easy segment: Darker greens -->
-          <linearGradient id="modernEasyGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#2E7D32" />
-            <stop offset="100%" stop-color="#00e676" />
-          </linearGradient>
-          <!-- Gradient for Medium segment: Darker amber tones -->
-          <linearGradient id="modernMediumGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#FF8F00" />
-            <stop offset="100%" stop-color="#FFEA00" />
-          </linearGradient>
-          <!-- Gradient for Hard segment: Darker reds -->
-          <linearGradient id="modernHardGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#ff1744" />
-            <stop offset="100%" stop-color="#ff5252" />
-          </linearGradient>
-        </defs>
-        
-      </defs>
-      <!-- Background track -->
-      <circle class="donut-track" cx="100" cy="100" r="80"></circle>
-      <!-- Donut segments -->
-      <circle class="donut-segment easy-segment" cx="100" cy="100" r="80" stroke="url(#modernEasyGradient)"></circle>
-      <circle class="donut-segment medium-segment" cx="100" cy="100" r="80" stroke="url(#modernMediumGradient)"></circle>
-      <circle class="donut-segment hard-segment" cx="100" cy="100" r="80" stroke="url(#modernHardGradient)"></circle>
-    </svg>
-    <!-- Center Text -->
-    <div class="donut-center-text">
-      <div class="donut-total" id="donut-total">0</div>
-      <div class="donut-subtitle" id="donut-subtitle">Solved</div>
-    </div>
-  </div>
+    <div id="radialBarBottom"></div>
 </div>
           <!-- Contest Rating History Chart -->
           <div class="chart-section">
