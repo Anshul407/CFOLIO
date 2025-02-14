@@ -81,61 +81,117 @@ fetchContest();
  * and the segment label.
  */
 function updateDonutChart(easy, medium, hard) {
-    const totalSolved = easy + medium + hard;
-    document.getElementById("donut-total").textContent = `${totalSolved}`;
-    document.getElementById("donut-subtitle").textContent = "Solved";
-
-    const RADIUS = 80;
-    const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
-
-    const easyFrac = totalSolved === 0 ? 0 : easy / totalSolved;
-    const mediumFrac = totalSolved === 0 ? 0 : medium / totalSolved;
-    const hardFrac = totalSolved === 0 ? 0 : hard / totalSolved;
-
-    const easyArcLen = easyFrac * CIRCUMFERENCE;
-    const mediumArcLen = mediumFrac * CIRCUMFERENCE;
-    const hardArcLen = hardFrac * CIRCUMFERENCE;
-
-    const easyArc = document.querySelector(".easy-segment");
-    const mediumArc = document.querySelector(".medium-segment");
-    const hardArc = document.querySelector(".hard-segment");
-
-    if (easyArc && mediumArc && hardArc) {
-        easyArc.style.strokeDasharray = `${easyArcLen} ${CIRCUMFERENCE}`;
-        mediumArc.style.strokeDasharray = `${mediumArcLen} ${CIRCUMFERENCE}`;
-        hardArc.style.strokeDasharray = `${hardArcLen} ${CIRCUMFERENCE}`;
-
-        // Position arcs consecutively
-        mediumArc.style.strokeDashoffset = `-${easyArcLen}`;
-        hardArc.style.strokeDashoffset = `-${(easyArcLen + mediumArcLen)}`;
-
-        // Store values for tooltip and hover center text
-        easyArc.dataset.count = easy;
-        easyArc.dataset.label = "Easy";
-        mediumArc.dataset.count = medium;
-        mediumArc.dataset.label = "Medium";
-        hardArc.dataset.count = hard;
-        hardArc.dataset.label = "Hard";
-
-        // Attach hover listeners to update center text with two decimal precision
-        [easyArc, mediumArc, hardArc].forEach(segment => {
-            if (!segment.hasCenterTextListener) {
-                segment.addEventListener("mousemove", function(e) {
-                    const count = parseInt(this.dataset.count);
-                    const label = this.dataset.label;
-                    const percent = totalSolved === 0 ? 0 : ((count / totalSolved) * 100).toFixed(2);
-                    document.getElementById("donut-total").textContent = percent + "%";
-                    document.getElementById("donut-subtitle").textContent = label;
-                });
-                segment.addEventListener("mouseout", function() {
-                    document.getElementById("donut-total").textContent = totalSolved;
-                    document.getElementById("donut-subtitle").textContent = "Solved";
-                });
-                segment.hasCenterTextListener = true;
-            }
-        });
+    var total = easy + medium + hard;
+    
+    // Avoid division by zero. If total is 0, set all values to 0.
+    if (total === 0) {
+      easy = medium = hard = 0;
+    } else {
+      easy = Number(((easy / total) * 100).toFixed(2));
+      medium = Number(((medium / total) * 100).toFixed(2));
+      hard = Number(((hard / total) * 100).toFixed(2));
     }
-}
+    
+    // Check if container element exists
+    var chartContainer = document.querySelector('#radialBarBottom');
+    if (!chartContainer) {
+      console.error("Element with id 'radialBarBottom' not found!");
+      return;
+    }
+    
+    // If a chart already exists, destroy it to avoid multiple instances
+    if (window.chartCircle4 && typeof window.chartCircle4.destroy === 'function') {
+      window.chartCircle4.destroy();
+    }
+    
+    var optionsCircle4 = {
+      chart: {
+        type: 'radialBar',
+        height: 430,
+        width: 480,
+      },
+      animations: {
+        enabled: true,
+        easing: 'easeinout',
+        speed: 800
+      },
+      // Retain your original base colors
+      colors: ['#ce1515', '#d07400', '#009292'],
+      // Apply gradient fill for a brighter effect
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shade: 'dark',
+          type: 'vertical',
+          shadeIntensity: 0.6,
+          // Brighter ending colors for each series:
+          gradientToColors: ['#ff6a6a', '#ffb84d', '#40dada'],
+          inverseColors: false,
+          opacityFrom: 1,
+          opacityTo: 1,
+          stops: [0, 100]
+        }
+      },
+      plotOptions: {
+        radialBar: {
+          size: undefined,
+          inverseOrder: true,
+          hollow: {
+            margin: 5,
+            size: '48%',
+            background: 'transparent',
+          },
+          track: {
+            show: false,
+          },
+          startAngle: -180,
+          endAngle: 180,
+          dataLabels: {
+            name: {
+              color: '#fff',
+              fontSize: '20px'
+            },
+            value: {
+              color: '#fff',
+              fontSize: '20px'
+            },
+            total: {
+              show: true,
+              label: 'Total',
+              color: '#fff',
+              fontSize: '20px',
+              formatter: function (w) {
+                return total;
+              }
+            }
+          }
+        }
+      },
+      stroke: {
+        lineCap: 'round'
+      },
+      // Note: series order and labels are set to show Hard, Medium, then Easy
+      series: [hard, medium, easy],
+      labels: ['Hard', 'Medium', 'Easy'],
+      legend: {
+        show: true,
+        floating: true,
+        position: 'right',
+        offsetX: 70,
+        offsetY: 300,
+        labels: {
+          colors: '#fff'
+        }
+      },
+    };
+    
+    // Render the Radial Bar chart and store the instance globally
+    window.chartCircle4 = new ApexCharts(chartContainer, optionsCircle4);
+    window.chartCircle4.render();
+  }
+  
+  
+  
 
 /**
  * Renders the line chart using ApexCharts with your ratings data and dark theme.
@@ -144,7 +200,7 @@ function renderLineChart(ratings) {
     var chartOptions = {
       chart: {
         type: 'line',
-        height: 400,
+        height: 430,
         background: "transparent",       // Transparent background
         foreColor: "#FFFFFF",            // White text for contrast
         toolbar: {
@@ -153,7 +209,7 @@ function renderLineChart(ratings) {
         animations: {
           enabled: true,
           easing: 'easeinout',
-          speed: 800
+          speed: 900
         }
       },
       colors: ["#F89C2C"], // Classic LeetCode orange for the line
