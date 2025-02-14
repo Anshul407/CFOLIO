@@ -344,84 +344,10 @@ header.header-container {
   height: 400px;
 }
 
-/* ------------------ MODERN DONUT CHART STYLES ------------------ */
-.modern-donut-container {
-  position: relative;
-  width: 100%;
-  max-width: 450px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 0px solid;
-  border-image: linear-gradient(45deg, #F89C2C, #FFC107) 1;
-  border-radius: 8px;
-  box-sizing: border-box;
-  min-height: 450px;
-  background-color: "transparent";
-}
-
-.modern-donut-chart {
-  width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-}
-
-/* Donut track */
-.donut-track {
-  fill: none;
-  stroke: #444;
-  stroke-width: 40;
-}
-
-/* Donut segments with gradient strokes */
-.donut-segment {
-  fill: none;
-  stroke-width: 40;
-  stroke-dasharray: 0 999;
-  stroke-dashoffset: 0;
-  transition: stroke-dasharray 0.5s ease, stroke 0.5s ease;
-  cursor: pointer;
-  opacity: 1;
-}
-.donut-segment:hover {
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
-}
-
-/* The gradients are applied via the SVG <defs>; no additional CSS needed here */
-
-/* Center text in donut */
-.donut-center-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  pointer-events: none;
-  color: #fff;
-}
-
-.donut-total {
-  font-size: 2rem;
-  font-weight: bold;
-}
-
-.donut-subtitle {
-  font-size: 0.9rem;
-  color: #aaa;
-}
-
-/* Optional: Tooltip styles for donut chart */
-#donut-tooltip {
-  position: absolute;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  pointer-events: none;
-  z-index: 9999;
-  display: none;
+.box {
+  background-color:"transparent";
+  padding: 25px 20px;
+  
 }
 
 
