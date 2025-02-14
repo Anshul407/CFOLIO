@@ -53,20 +53,7 @@
     <header>
       <h1>Overall Dashboard</h1>
       <!-- Aggregated Metrics -->
-      <div class="rating-info">
-        <div class="rating">
-          <h3>Aggregate Rating</h3>
-          <p id="aggregate-rating">--</p>
-        </div>
-        <div class="global-rank">
-          <h3>Overall Ranking</h3>
-          <p id="overall-ranking">--</p>
-        </div>
-        <div class="top-percentile">
-          <h3>Top Percentile</h3>
-          <p id="top-percentile">--</p>
-        </div>
-      </div>
+      
     </header>
 
     <!-- STATS SECTION -->
@@ -93,6 +80,15 @@
     <section class="chart-section">
       <h2>Overall Performance</h2>
       <canvas id="overallChart" width="400" height="200"></canvas>
+    </section>
+
+    <!-- Codeforces Contests Section -->
+    <section class="contests-section">
+      <h2>Upcoming Codeforces Contests</h2>
+      <div id="contest-container" class="contest-container">
+        <!-- Contests will be dynamically populated here -->
+      </div>
+      <div id="contest-links"></div>
     </section>
   </main>
 

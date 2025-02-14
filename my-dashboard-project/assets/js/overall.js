@@ -6,6 +6,7 @@ let url2='https://codeforces.com/api/user.rating?handle=anshul407';
 let url3='https://codeforces.com/api/user.status?handle=anshul407';
 let url4 = 'https://leetcode-api-faisalshohag.vercel.app/';
 let url5 = 'https://alfa-leetcode-api.onrender.com//contest';
+let url6='https://codeforces.com/api/contest.list';
 
 if (useridElement2.length > 0) {
     let userid = useridElement2[0].innerText.trim();
@@ -49,7 +50,32 @@ let assignValue=async()=>{
 
 
 }
+let upcommingContest=async()=>{
+    let cur1 = await fetch(url6);
+    let data1 = await cur1.json();
+    const upcomingContests = data1.result.filter(contest => contest.phase === "BEFORE");
+    upcomingContests.sort((a, b) => a.startTimeSeconds - b.startTimeSeconds);
+    console.log(upcomingContests);
+    const contestsHtml = upcomingContests
+        .map(
+            (contest) => `
+                <div class="contest">
+                    <h3>${contest.name}</h3>
+                    <p><strong>Start Time:</strong> ${new Date(contest.startTimeSeconds * 1000).toLocaleString()}</p>
+                    <p><strong>Duration:</strong> ${contest.durationSeconds / 3600} hours</p>
+                </div>
+            `
+        )
+        .join("");
+
+    // Render contests in the container
+    document.getElementById("contest-container").innerHTML=contestsHtml;
+    
+    
+}
+upcommingContest();
 assignValue();// --- Overall Performance Chart ---
+
 function drawChart(canvasId, data, color) {
     const canvas = document.getElementById(canvasId);
     const ctx = canvas.getContext('2d');
@@ -114,3 +140,59 @@ document.addEventListener("DOMContentLoaded", function() {
 
     initializeCharts();
 });
+
+// Function to get the current week's contest details
+function getCurrentWeekContestDetails() {
+    const today = new Date();
+
+    // Reference dates for Weekly and Biweekly contests
+    const referenceWeeklyDate = new Date("2025-01-19T08:00:00+05:30"); // Weekly Contest 433 (Jan 19, 2025)
+    const referenceBiweeklyDate = new Date("2025-01-18T20:00:00+05:30"); // Biweekly Contest 148 (Jan 18, 2025)
+
+    // Calculate the number of full 7-day weeks since the Weekly Contest reference date
+    const weeklyDaysDiff = Math.floor((today - referenceWeeklyDate) / (1000 * 60 * 60 * 24));
+    const weeklyContestNumber = 433 + Math.floor(weeklyDaysDiff / 7); // Weekly Contest starts from 433 on Jan 19, 2025
+
+    // Calculate the number of full 14-day intervals since the Biweekly Contest reference date
+    const biweeklyDaysDiff = Math.floor((today - referenceBiweeklyDate) / (1000 * 60 * 60 * 24));
+    const biweeklyContestNumber = 148 + Math.floor(biweeklyDaysDiff / 14); // Biweekly Contest starts from 148 on Jan 18, 2025
+
+    // Adjust for 1-week lag:
+    const correctedWeeklyContestNumber = weeklyContestNumber + 1;
+    const correctedBiweeklyContestNumber = biweeklyContestNumber + 1;
+
+    // Check if this week has a Biweekly Contest (every 14 days from Jan 18, 2025)
+    const isBiweeklyWeek = 1;
+
+    return {
+        biweeklyLink: isBiweeklyWeek ? `https://leetcode.com/contest/biweekly-contest-${correctedBiweeklyContestNumber}/` : null,
+        weeklyLink: `https://leetcode.com/contest/weekly-contest-${correctedWeeklyContestNumber}/`,
+    };
+}
+
+// Function to display contest links
+function displayContestLinks() {
+    const { biweeklyLink, weeklyLink } = getCurrentWeekContestDetails();
+    const contestLinksContainer = document.getElementById("contest-links");
+
+    contestLinksContainer.innerHTML = ""; // Clear previous content
+
+    if (biweeklyLink) {
+        contestLinksContainer.innerHTML += `
+            <p>
+                <strong>Biweekly Contest:</strong>
+                <a href="${biweeklyLink}" target="_blank">${biweeklyLink}</a>
+            </p>
+        `;
+    }
+
+    contestLinksContainer.innerHTML += `
+        <p>
+            <strong>Weekly Contest:</strong>
+            <a href="${weeklyLink}" target="_blank">${weeklyLink}</a>
+        </p>
+    `;
+}
+
+// Run the function when the DOM loads
+document.addEventListener("DOMContentLoaded", displayContestLinks);
