@@ -1,5 +1,27 @@
 // overall.js
+let useridElement = document.getElementsByClassName('user-handlecf');
+let useridElement2 = document.getElementsByClassName('user-handlelc');
+let url = 'https://codeforces.com/api/user.info?handles=anshul407&checkHistoricHandles=false';
+let url2='https://codeforces.com/api/user.rating?handle=anshul407';
+let url3='https://codeforces.com/api/user.status?handle=anshul407';
+let url4 = 'https://leetcode-api-faisalshohag.vercel.app/';
+let url5 = 'https://alfa-leetcode-api.onrender.com//contest';
 
+if (useridElement2.length > 0) {
+    let userid = useridElement2[0].innerText.trim();
+    url4 = url4 + userid;
+    url5 = `https://alfa-leetcode-api.onrender.com/${userid}/contest`;
+    console.log(url);
+}
+
+if (useridElement.length > 0) {
+  let userid = useridElement[0].innerText.trim(); 
+  
+  url = `https://codeforces.com/api/user.info?handles=${userid}&checkHistoricHandles=false`;
+  url2= `https://codeforces.com/api/user.rating?handle=${userid}`;
+  url3=`https://codeforces.com/api/user.status?handle=${userid}`;
+  console.log(url);
+}
 // --- Aggregated Overall Metrics (Example Values) ---
 const aggregateRating = 1950;
 const overallRanking = "150 / 10,000,000";
@@ -11,45 +33,23 @@ const leetcodeSolved = 335;
 const codeforcesSolved = 210;
 const otherSolved = 5;
 
-// Insert metrics into the DOM
-document.getElementById("aggregate-rating").textContent = aggregateRating;
-document.getElementById("overall-ranking").textContent = overallRanking;
-document.getElementById("top-percentile").textContent = topPercentile;
+let assignValue=async()=>{
+    let cur1 = await fetch(url4);
+    let data1 = await cur1.json();
+    let cur2=await fetch(url3);
+    let data2=await cur2.json();
+    const okSubmissions = data2.result.filter(sub => sub.verdict === "OK");
+    const cfProblems = new Set(okSubmissions.map(sub => `${sub.problem.contestId}-${sub.problem.index}`));
+    const lcProblems=data1.totalSolved;
+    document.getElementById("total-solved").textContent=cfProblems.size+lcProblems;
+    
+    document.getElementById("leetcode-solved").textContent=lcProblems;
+    document.getElementById("codeforces-solved").textContent=cfProblems.size
+    console.log(cfProblems.size+lcProblems);
 
-document.getElementById("total-solved").textContent = totalSolved;
-document.getElementById("leetcode-solved").textContent = leetcodeSolved;
-document.getElementById("codeforces-solved").textContent = codeforcesSolved;
-document.getElementById("other-solved").textContent = otherSolved;
 
-// --- Fetch Data from LeetCode GraphQL API ---
-async function fetchLeetCodeData() {
-    const query = `
-    {
-        matchedUser(username: "22147407") {
-            submitStatsGlobal {
-                acSubmissionNum {
-                    difficulty
-                    count
-                    submissions
-                }
-            }
-        }
-    }`;
-
-    const response = await fetch('https://leetcode.com/graphql', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        },
-        body: JSON.stringify({ query })
-    });
-
-    const data = await response.json();
-    return data.data.matchedUser.submitStatsGlobal.acSubmissionNum;
 }
-
-// --- Overall Performance Chart ---
+assignValue();// --- Overall Performance Chart ---
 function drawChart(canvasId, data, color) {
     const canvas = document.getElementById(canvasId);
     const ctx = canvas.getContext('2d');
@@ -92,15 +92,7 @@ function drawChart(canvasId, data, color) {
     ctx.stroke();
 }
 
-// --- Initialize Charts ---
-async function initializeCharts() {
-    const performanceData = [1800, 1850, 1900, 1950, 1920, 2000];
-    drawChart("overallChart", performanceData, "#00ACC1");
 
-    const leetCodeData = await fetchLeetCodeData();
-    const dailySubmissions = leetCodeData.map(entry => entry.submissions);
-    drawChart("leetCodeChart", dailySubmissions, "#FF6F00");
-}
 
 document.addEventListener("DOMContentLoaded", function() {
     const sidebar = document.getElementById("sidebar");
