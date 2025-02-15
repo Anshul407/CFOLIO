@@ -48,7 +48,7 @@ let assignValue=async()=>{
   let cur2=await fetch(url3);
   let data2=await cur2.json();
   const okSubmissions = data2.result.filter(sub => sub.verdict === "OK");
-  const cfProblems = new Set(okSubmissions.map(sub => ${sub.problem.contestId}-${sub.problem.index}));
+  const cfProblems = new Set(okSubmissions.map(sub => `${sub.problem.contestId}-${sub.problem.index}`));
   const lcProblems=data1.totalSolved;
   totalSolved=cfProblems.size+lcProblems;
   console.log(totalSolved)
@@ -79,7 +79,8 @@ let assignContest=async()=>{
     ratingHistory = ratingHistory.slice(-30);
   }
   codeForcesRating=ratingHistory;
-  console.log(codeForcesRating);
+  console.log(codeForcesRating)
+ 
   updateAreaChart(leetCodeRating, codeForcesRating);
 
 
