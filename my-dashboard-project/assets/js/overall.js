@@ -66,6 +66,44 @@ let assignValue=async()=>{
   
 
 }
+roject/assets/js/overall.js
++82
+Original file line number	Diff line number	Diff line change
+@@ -6,6 +6,7 @@ let url2='https://codeforces.com/api/user.rating?handle=anshul407';
+let url3='https://codeforces.com/api/user.status?handle=anshul407';
+let url4 = 'https://leetcode-api-faisalshohag.vercel.app/';
+let url5 = 'https://alfa-leetcode-api.onrender.com//contest';
+let url6='https://codeforces.com/api/contest.list';
+
+if (useridElement2.length > 0) {
+    let userid = useridElement2[0].innerText.trim();
+@@ -49,7 +50,32 @@ let assignValue=async()=>{
+
+
+}
+let upcommingContest=async()=>{
+    let cur1 = await fetch(url6);
+    let data1 = await cur1.json();
+    const upcomingContests = data1.result.filter(contest => contest.phase === "BEFORE");
+    upcomingContests.sort((a, b) => a.startTimeSeconds - b.startTimeSeconds);
+    console.log(upcomingContests);
+    const contestsHtml = upcomingContests
+        .map(
+            (contest) => `
+                <div class="contest">
+                    <h3>${contest.name}</h3>
+                    <p><strong>Start Time:</strong> ${new Date(contest.startTimeSeconds * 1000).toLocaleString()}</p>
+                    <p><strong>Duration:</strong> ${contest.durationSeconds / 3600} hours</p>
+                </div>
+            `
+        )
+        .join("");
+    // Render contests in the container
+    document.getElementById("contest-container").innerHTML=contestsHtml;
+    
+    
+}
+upcommingContest();
 let assignContest=async()=>{
   let cur = await fetch(url5);
   let data = await cur.json();
