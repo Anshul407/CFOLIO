@@ -129,6 +129,7 @@ document.addEventListener("DOMContentLoaded", function() {
 //
 
 // 1. Radial Bar Chart for Problem Distribution
+
 function updateChart(totalSolved, leetcodeSolved, codeforcesSolved) {
   if (totalSolved <= 0) {
     console.error("Invalid totalSolved value:", totalSolved);
@@ -141,59 +142,59 @@ function updateChart(totalSolved, leetcodeSolved, codeforcesSolved) {
     return;
   }
 
-  var optionsDonut = {
+  var options = {
+    series: [codeforcesSolved, leetcodeSolved], // CodeForces first, LeetCode second
+    labels: ['CodeForces', 'LeetCode'],
+    colors: ['blue', 'red'], // CodeForces -> Blue, LeetCode -> Red
     chart: {
       type: 'donut',
-      height: 500,
-      width: 500,
+      width: 550, // Reduced width to make the chart smaller
     },
     plotOptions: {
       pie: {
         donut: {
-          size: '40%',
+          size: '65%', // Adjusts the donut thickness
           labels: {
             show: true,
             total: {
               show: true,
-              label: 'Solved',
-              fontSize: '15px',
-              color: '#E9ECEF',
-              formatter: function () {
+              color: 'white',
+              label: 'Total',
+              size: 300,
+              formatter: function() {
                 return totalSolved;
-              },
-            },
-          },
-        },
-      },
+              }
+            }
+          }
+        }
+      }
     },
-    // Use actual numbers so ApexCharts will compute the percentage distribution
-    series: [
-      codeforcesSolved,
-      leetcodeSolved,
-    ],
-    labels: ['CodeForces', 'LeetCode'],
-    colors: [
-      '#0000FF',  // CodeForces: blue
-      '#FF0000'   // LeetCode: red
-    ],
     fill: {
-      type: 'gradient',
-      gradient: {
-        shade: 'light',
-        type: 'vertical',
-        gradientToColors: ['#0000FF', '#FF0000'],
-        inverseColors: false,
-        opacityFrom: 1,
-        opacityTo: 1,
-        stops: [0, 100],
-      },
+      type: 'solid',
+      opacity: 1, // Ensure the slices remain solid
     },
-    legend: {
+    states: {
+      hover: {
+        filter: {
+          type: 'none', // Prevents unwanted background color on hover
+        }
+      }
+    },
+    stroke: {
       show: true,
-      position: 'right',
-      offsetX: 90,
-      offsetY: 175,
+      width: 0, // Removes the track (white background)
     },
+    responsive: [{
+      breakpoint: 480,
+      options: {
+        chart: {
+          width: 480 // Further reduce size on small screens
+        },
+        legend: {
+          position: 'bottom'
+        }
+      }
+    }]
   };
 
   // Destroy any existing donut chart instance if present
@@ -202,9 +203,13 @@ function updateChart(totalSolved, leetcodeSolved, codeforcesSolved) {
     window.chartDonut.destroy();
   }
 
-  window.chartDonut = new ApexCharts(targetElement, optionsDonut);
+  window.chartDonut = new ApexCharts(targetElement, options);
   window.chartDonut.render();
 }
+
+
+
+
 
 
 // 2. Area Chart for Ratings (LeetCode and CodeForces) with Red and Blue Gradients
@@ -262,58 +267,82 @@ function updateAreaChart(leetCodeRating, codeForcesRating) {
 }
 
 // 3. Heatmap Chart for Daily Submissions (Green Gradient remains unchanged)
-function updateHeatmap(dailySubmissions) {
+function generateData(count, totalSubmissions, acceptedSubmissions) {
   let data = [];
-  for (let i = 29; i >= 0; i--) {
-    let date = new Date();
-    date.setDate(date.getDate() - i);
+  for (let i = 0; i < count; i++) {
+    let submissionRatio = acceptedSubmissions / totalSubmissions;
+    let randomValue = Math.floor(Math.random() * (90 - 0 + 1)) + 0; // Random value between 0-90
+    
+    // Adjust value based on acceptance ratio
+    let adjustedValue = Math.floor(randomValue * submissionRatio);
+
     data.push({
-      x: date.toISOString().split('T')[0],
-      y: dailySubmissions[29 - i]
+      x: `Category ${i + 1}`,
+      y: adjustedValue
     });
   }
+  return data;
+}
 
-  const MIN_VALUE = 0;
-  const MAX_VALUE = 40;
-
-  let optionsHeatmap = {
+function updateHeatmap(totalSubmissions, acceptedSubmissions) {
+  var options = {
+    series: [
+      { name: 'Metric1', data: generateData(18, totalSubmissions, acceptedSubmissions) },
+      { name: 'Metric2', data: generateData(18, totalSubmissions, acceptedSubmissions) },
+      { name: 'Metric3', data: generateData(18, totalSubmissions, acceptedSubmissions) },
+      { name: 'Metric4', data: generateData(18, totalSubmissions, acceptedSubmissions) },
+      { name: 'Metric5', data: generateData(18, totalSubmissions, acceptedSubmissions) },
+      { name: 'Metric6', data: generateData(18, totalSubmissions, acceptedSubmissions) },
+      { name: 'Metric7', data: generateData(18, totalSubmissions, acceptedSubmissions) },
+      { name: 'Metric8', data: generateData(18, totalSubmissions, acceptedSubmissions) },
+      { name: 'Metric9', data: generateData(18, totalSubmissions, acceptedSubmissions) }
+    ],
     chart: {
       height: 350,
-      type: 'heatmap'
+      type: 'heatmap',
     },
+    dataLabels: {
+      enabled: false
+    },
+    colors: ["#90EE90"], // Light green color
+    
     plotOptions: {
       heatmap: {
+        shadeIntensity: 0.5,
         colorScale: {
-          min: MIN_VALUE,
-          max: MAX_VALUE,
-          gradient: {
-            shadeIntensity: 0.8,
-            inverseColors: false,
-            stops: [0, 100],
-            colorStops: [
-              { offset: 0, color: '#c2f3c2', opacity: 1 }, // light green
-              { offset: 100, color: '#006400', opacity: 1 }  // dark green
-            ]
-          }
+          ranges: [
+            {
+              from: 0,
+              to: 30,
+              color: "#A2D5A2" // Light green
+            },
+            {
+              from: 31,
+              to: 60,
+              color: "#66C266" // Medium green
+            },
+            {
+              from: 61,
+              to: 100,
+              color: "#28A745" // Dark green
+            }
+          ]
         }
       }
     },
-    dataLabels: {
-      enabled: false,
-    },
-    series: [{
-      name: 'Daily Submissions',
-      data: data
-    }],
+
     title: {
-      text: 'Submissions',
+      text: `Submissions HeatMap (Total: ${totalSubmissions}, Accepted: ${acceptedSubmissions})`
     },
   };
 
+  // Destroy existing chart before creating a new one
   if (window.heatmapChart && typeof window.heatmapChart.destroy === "function") {
     window.heatmapChart.destroy();
   }
 
-  window.heatmapChart = new ApexCharts(document.querySelector('#heatmapChart'), optionsHeatmap);
+  window.heatmapChart = new ApexCharts(document.querySelector("#heatmapChart"), options);
   window.heatmapChart.render();
 }
+
+
