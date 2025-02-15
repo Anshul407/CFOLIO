@@ -7,10 +7,21 @@
   <link rel="icon" href="assets/images/sidebar.jpg" type="image/jpeg">
   <!-- Link to your Overall CSS file -->
   <link rel="stylesheet" href="assets/css/overall.css" />
+  <style>
+    /* Simple flex layout for chart row */
+    .chart-row {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .chart-row .chart-section {
+      flex: 1 1 45%;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- SIDEBAR (Same as LeetCode) -->
+  <!-- SIDEBAR -->
   <nav class="sidebar" id="sidebar">
     <button class="toggle-btn" id="toggleBtn">
       <img src="assets/images/sidebar.jpg" alt="Toggle Sidebar" class="toggle-icon" />
@@ -20,8 +31,8 @@
     <div class="profile-section">
       <img src="assets/images/profile.jpg" alt="Profile" class="profile-pic" />
       <h2 class="username">Samudra</h2>
-      <p class="user-handlecf">anshul407</p>
       <p class="user-handlelc">22147407</p>
+      <p class="user-handlecf">anshul407</p>
       <p class="user-rank">Rank: 275,986</p>
     </div>
 
@@ -53,7 +64,7 @@
     <header>
       <h1>Overall Dashboard</h1>
       <!-- Aggregated Metrics -->
-      
+     
     </header>
 
     <!-- STATS SECTION -->
@@ -76,22 +87,25 @@
       </div>
     </section>
 
-    <!-- CHART SECTION: Overall Performance -->
-    <section class="chart-section">
-      <h2>Overall Performance</h2>
-      <canvas id="overallChart" width="400" height="200"></canvas>
-    </section>
-
-    <!-- Codeforces Contests Section -->
-    <section class="contests-section">
-      <h2>Upcoming Codeforces Contests</h2>
-      <div id="contest-container" class="contest-container">
-        <!-- Contests will be dynamically populated here -->
+    <!-- CHART SECTIONS -->
+    <div class="chart-row">
+      <div class="chart-section">
+        <h2>Problem Distribution</h2>
+        <div id="donutChart"></div>
       </div>
-      <div id="contest-links"></div>
-    </section>
+      <div class="chart-section">
+        <h2>Rating</h2>
+        <div id="areachart"></div>
+      </div>
+    </div>
+    <br><br>
+    <div class="chart-section">
+      <h2>Daily Submissions</h2>
+      <div id="heatmapChart"></div>
+    </div>
   </main>
-
+  
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <!-- Link to your Overall JavaScript file -->
   <script src="assets/js/overall.js"></script>
 </body>
