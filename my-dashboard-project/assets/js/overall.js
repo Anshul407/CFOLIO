@@ -11,16 +11,16 @@ let url6='https://codeforces.com/api/contest.list';
 if (useridElement2.length > 0) {
     let userid = useridElement2[0].innerText.trim();
     url4 = url4 + userid;
-    url5 = https://alfa-leetcode-api.onrender.com/${userid}/contest;
+    url5 = `https://alfa-leetcode-api.onrender.com/${userid}/contest`;
     console.log(url);
 }
 
 if (useridElement.length > 0) {
   let userid = useridElement[0].innerText.trim(); 
   
-  url = https://codeforces.com/api/user.info?handles=${userid}&checkHistoricHandles=false;
-  url2= https://codeforces.com/api/user.rating?handle=${userid};
-  url3=https://codeforces.com/api/user.status?handle=${userid};
+  url = `https://codeforces.com/api/user.info?handles=${userid}&checkHistoricHandles=false`;
+  url2= `https://codeforces.com/api/user.rating?handle=${userid}`;
+  url3=`https://codeforces.com/api/user.status?handle=${userid}`;
   console.log(url);
 }
 // --- Aggregated Overall Metrics (Example Values) ---
