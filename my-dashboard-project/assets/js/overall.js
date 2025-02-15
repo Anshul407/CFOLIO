@@ -59,7 +59,8 @@ let assignValue=async()=>{
   document.getElementById("leetcode-solved").textContent = leetcodeSolved;
   document.getElementById("codeforces-solved").textContent = codeforcesSolved;
   document.getElementById("other-solved").textContent = otherSolved;
-
+  updateChart(totalSolved, leetcodeSolved, codeforcesSolved, otherSolved);
+  updateHeatmap(dailySubmissions);
   // Update charts
   assignContest();
   
@@ -78,9 +79,7 @@ let assignContest=async()=>{
     ratingHistory = ratingHistory.slice(-30);
   }
   codeForcesRating=ratingHistory;
-  console.log(codeForcesRating)
-  updateChart(totalSolved, leetcodeSolved, codeforcesSolved, otherSolved);
-  updateHeatmap(dailySubmissions);
+  console.log(codeForcesRating);
   updateAreaChart(leetCodeRating, codeForcesRating);
 
 
