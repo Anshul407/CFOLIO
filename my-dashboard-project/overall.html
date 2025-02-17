@@ -1,112 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Overall Dashboard</title>
-  <link rel="icon" href="assets/images/sidebar.jpg" type="image/jpeg">
-  <!-- Link to your Overall CSS file -->
-  <link rel="stylesheet" href="assets/css/overall.css" />
-  <style>
-    /* Simple flex layout for chart row */
-    .chart-row {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-    .chart-row .chart-section {
-      flex: 1 1 45%;
-    }
-  </style>
-</head>
-<body>
-
-  <!-- SIDEBAR -->
-  <nav class="sidebar" id="sidebar">
-    <button class="toggle-btn" id="toggleBtn">
-      <img src="assets/images/sidebar.jpg" alt="Toggle Sidebar" class="toggle-icon" />
-    </button>
-
-    <!-- User Profile Info -->
-    <div class="profile-section">
-      <img src="assets/images/profile.jpg" alt="Profile" class="profile-pic" />
-      <h2 class="username">Samudra</h2>
-      <p class="user-handlelc">22147407</p>
-      <p class="user-handlecf">anshul407</p>
-      <p class="user-rank">Rank: 275,986</p>
-    </div>
-
-    <!-- Navigation Links -->
-    <ul class="nav-links">
-      <li>
-        <a href="overall.html" class="active">
-          <img src="assets/images/ovr.png" alt="Overall Icon" class="nav-icon" />
-          <span class="link-text">Overall</span>
-        </a>
-      </li>
-      <li>
-        <a href="LeetCode.html">
-          <img src="assets/images/lc.png" alt="LeetCode Icon" class="nav-icon" />
-          <span class="link-text">LeetCode</span>
-        </a>
-      </li>
-      <li>
-        <a href="codeforces.html">
-          <img src="assets/images/cf.png" alt="Codeforces Icon" class="nav-icon" />
-          <span class="link-text">Codeforces</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
-
-  <!-- MAIN CONTENT -->
-  <main class="main-content">
-    <header>
-      <h1>Overall Dashboard</h1>
-      <!-- Aggregated Metrics -->
-     
-    </header>
-
-    <!-- STATS SECTION -->
-    <section class="stats">
-      <div class="stat-card">
-        <h3>Total Problems Solved</h3>
-        <p id="total-solved">--</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Overall Dashboard</title>
+    <link rel="icon" href="assets/images/sidebar.jpg" type="image/jpeg" />
+    <!-- Link to your Overall CSS file -->
+    <link rel="stylesheet" href="assets/css/overall.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* Simple flex layout for chart row */
+      .chart-row {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      .chart-row .chart-section {
+        flex: 1 1 45%;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+      <header>
+        <div class="image-text">
+          <span class="image">
+            <img
+              src="assets/images/sidebar.png"
+              alt="sidebar Icon"
+              class="nav-icon"
+            />
+          </span>
+          <div class="text logo-text">
+            <h2 class="username">Samudra</h2>
+            <p class="user-handlelc">22147407</p>
+            <p class="user-handlecf">anshul407</p>
+          </div>
+        </div>
+        <i class="bx bx-chevron-right toggle"></i>
+      </header>
+      <div class="menu-bar">
+        <div class="menu">
+          <ul class="nav-links">
+            <li>
+              <a href="overall.html">
+                <img
+                  src="assets/images/over.png"
+                  alt="Overall Icon"
+                  class="nav-icon"
+                />
+                <span class="text logo-text">Overall</span>
+              </a>
+            </li>
+            <li>
+              <a href="LeetCode.html" class="active">
+                <img
+                  src="assets/images/lc.png"
+                  alt="LeetCode Icon"
+                  class="nav-icon"
+                />
+                <span class="text logo-text">LeetCode</span>
+              </a>
+            </li>
+            <li>
+              <a href="codeforces.html">
+                <img
+                  src="assets/images/cf.png"
+                  alt="Codeforces Icon"
+                  class="nav-icon"
+                />
+                <span class="text logo-text">Codeforces</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="bottom-content">
+          <li>
+            <a href="#">
+              <i class="bx bx-log-out icon"></i>
+              <span class="text nav-text">Logout</span>
+            </a>
+          </li>
+          <li class="mode">
+            <div class="sun-moon">
+              <i class="bx bx-moon icon moon"></i>
+              <i class="bx bx-sun icon sun"></i>
+            </div>
+            <span class="mode-text text">Dark mode</span>
+            <div class="toggle-switch">
+              <span class="switch"></span>
+            </div>
+          </li>
+        </div>
       </div>
-      <div class="stat-card">
-        <h3>LeetCode Solved</h3>
-        <p id="leetcode-solved">--</p>
-      </div>
-      <div class="stat-card">
-        <h3>Codeforces Solved</h3>
-        <p id="codeforces-solved">--</p>
-      </div>
-      <div class="stat-card">
-        <h3>Other Platforms</h3>
-        <p id="other-solved">--</p>
-      </div>
-    </section>
+    </nav>
 
-    <!-- CHART SECTIONS -->
-    <div class="chart-row">
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <header>
+        <h1>Overall Dashboard</h1>
+        <!-- Aggregated Metrics -->
+      </header>
+
+      <!-- STATS SECTION -->
+      <section class="stats">
+        <div class="stat-card">
+          <h3>Total Problems Solved</h3>
+          <p id="total-solved">--</p>
+        </div>
+        <div class="stat-card">
+          <h3>LeetCode Solved</h3>
+          <p id="leetcode-solved">--</p>
+        </div>
+        <div class="stat-card">
+          <h3>Codeforces Solved</h3>
+          <p id="codeforces-solved">--</p>
+        </div>
+        <div class="stat-card">
+          <h3>Other Platforms</h3>
+          <p id="other-solved">--</p>
+        </div>
+      </section>
+
+      <!-- CHART SECTIONS -->
+      <div class="chart-row">
+        <div class="chart-section">
+          <h2>Problem Distribution</h2>
+          <div id="donutChart"></div>
+        </div>
+        <div class="chart-section">
+          <h2>Rating</h2>
+          <div id="areachart"></div>
+        </div>
+      </div>
+      <br /><br />
       <div class="chart-section">
-        <h2>Problem Distribution</h2>
-        <div id="donutChart"></div>
+        <h2>Daily Submissions</h2>
+        <div id="heatmapChart"></div>
       </div>
-      <div class="chart-section">
-        <h2>Rating</h2>
-        <div id="areachart"></div>
-      </div>
-    </div>
-    <br><br>
-    <div class="chart-section">
-      <h2>Daily Submissions</h2>
-      <div id="heatmapChart"></div>
-    </div>
-  </main>
-  
-  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-  <!-- Link to your Overall JavaScript file -->
-  <script src="assets/js/overall.js"></script>
-</body>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <!-- Link to your Overall JavaScript file -->
+    <script src="assets/js/overall.js"></script>
+  </body>
 </html>
