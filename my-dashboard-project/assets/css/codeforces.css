@@ -1,18 +1,31 @@
-/* codeforces.css */
-/* 
-  Dark theme inspired by Codeforces.
-  Sidebar remains identical to LeetCode.
-  Main content uses a dark background with Codeforces’ signature red accent.
-*/
-:root {
-  --background-color: #1F1F1F;
-  --sidebar-color: #2A2A2A; /* Same as LeetCode sidebar */
-  --text-color: #CCCCCC;
-  --accent-color: #D42027; /* Codeforces red */
-  --card-bg-color: #333333;
-  --transition-speed: 0.3s;
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
+:root {
+  --sidebar-width: 250px; /* Full width when expanded */
+  --sidebar-closed-width: 88px; /* Width when sidebar is closed */
+  --transition-speed: 0.3s;
+  /* ===== Colors ===== */
+  --body-color: #f3f4f6;       /* Light gray background for the entire page */
+  --sidebar-color: #ffffff;     /* Clean white sidebar */
+  --primary-color: #ff0000;     /* Subtle neutral for hover backgrounds, etc. */
+  --primary-color-light: #f9fafb; /* Even lighter neutral for toggles, etc. */
+  --toggle-color: #ccc;         /* Slider track color */
+  --text-color: #007bff;
+  --accent-color: #ff0000; /* Codeforces red */
+  --card-bg-color: #333333;
+  /* ====== Transition ====== */
+  --transition-speed: 0.3s;
+  --tran-03: all 0.3s ease;
+  --tran-04: all 0.3s ease;
+  --tran-05: all 0.3s ease;
+}
 * {
   margin: 0;
   padding: 0;
@@ -21,124 +34,297 @@
 }
 
 body {
-  background-color: var(--background-color);
-  color: var(--text-color);
+  min-height: 100vh;
+  background-color: var(--body-color);
+  transition: var(--tran-05);
+}
+::selection {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+body.dark {
+  --body-color: #18191a;
+  --sidebar-color: #242526;
+  --primary-color: #3a3b3c;
+  --primary-color-light: #3a3b3c;
+  --toggle-color: #fff;
+  --text-color: #CCCCCC;
+  --accent-color: #e86b6b; /* Codeforces red */
+  --card-bg-color: #333333;
 }
 
-/* SIDEBAR (Same as in leetcode.css) */
+
+/* ===== Sidebar ===== */
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
-  width: 70px;
-  height: 100vh;
-  background-color: var(--sidebar-color);
-  padding: 10px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  height: 100%;
+  width: var(--sidebar-width);
+  padding: 10px 14px;
+  background: var(--sidebar-color);
+  /* Transition only the width for a smoother effect */
   transition: width var(--transition-speed) ease;
-  z-index: 99;
+  z-index: 100;
 }
 
-.sidebar.expanded {
-  width: 220px;
+.sidebar.close {
+  width: var(--sidebar-closed-width);
 }
 
-.toggle-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  margin-bottom: 20px;
-  align-self: flex-end;
-  transition: transform var(--transition-speed) ease;
-}
-
-.toggle-icon {
-  width: 32px;
-  height: 32px;
-}
-
-.profile-section {
-  text-align: center;
-  margin-bottom: 30px;
-  transition: opacity var(--transition-speed) ease;
-}
-
-.profile-pic {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  margin-bottom: 8px;
-}
-
-.username {
-  font-size: 1rem;
-  margin-bottom: 4px;
-}
-
-.user-handle,
-.user-rank {
-  font-size: 0.85rem;
-  color: #bbbbbb;
-}
-
-/* Hide user details when sidebar is collapsed */
-.sidebar:not(.expanded) .profile-section .username,
-.sidebar:not(.expanded) .profile-section .user-handle,
-.sidebar:not(.expanded) .profile-section .user-rank {
-  display: none;
-}
-
-.nav-links {
+/* ===== Reusable code - Here ===== */
+.sidebar li {
+  height: 50px;
   list-style: none;
-  padding: 0;
-  flex: 1;
-}
-
-.nav-links li {
-  margin-bottom: 15px;
-}
-
-.nav-links a {
   display: flex;
   align-items: center;
-  color: #bbbbbb;
-  text-decoration: none;
-  padding: 8px;
-  border-radius: 4px;
-  transition: background-color var(--transition-speed) ease;
+  margin-top: 10px;
 }
-
-.nav-links a.active {
-  background-color: var(--accent-color);
-  color: #fff;
+.sidebar header .image,
+.sidebar .icon {
+  min-width: 60px;
+  border-radius: 6px;
 }
-
-.nav-links a:hover {
-  background-color: #383838;
+.sidebar .icon {
+  min-width: 60px;
+  border-radius: 6px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
 }
-
-.nav-icon {
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
+.sidebar .text,
+.sidebar .icon {
+  color: var(--text-color);
+  transition: var(--tran-03);
 }
-
-.sidebar:not(.expanded) .link-text {
+.sidebar .text {
+  font-size: 17px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 1;
+}
+.sidebar.close .text {
   display: none;
 }
-
-/* MAIN CONTENT */
-.main-content {
-  margin-left: 70px;
-  padding: 20px;
-  transition: margin-left var(--transition-speed) ease;
+/* =========================== */
+.sidebar header {
+  position: relative;
+}
+.sidebar header .image-text {
+  display: flex;
+  align-items: center;
+}
+.sidebar header .logo-text {
+  display: flex;
+  flex-direction: column;
+}
+header .image-text .name {
+  margin-top: 2px;
+  font-size: 18px;
+  font-weight: 600;
+}
+header .image-text .profession {
+  font-size: 16px;
+  margin-top: -2px;
+  display: block;
+}
+.sidebar header .image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sidebar header .image img {
+  width: 40px;
+  border-radius: 6px;
+}
+.sidebar header .toggle {
+  position: absolute;
+  top: 50%;
+  right: -25px;
+  transform: translateY(-50%) rotate(180deg);
+  height: 25px;
+  width: 25px;
+  background-color: var(--primary-color);
+  color: var(--sidebar-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  cursor: pointer;
+  transition: var(--tran-05);
+}
+body.dark .sidebar header .toggle {
+  color: var(--text-color);
+}
+.sidebar.close .toggle {
+  transform: translateY(-50%) rotate(0deg);
+}
+.sidebar .menu {
+  margin-top: 40px;
+}
+.sidebar li a {
+  list-style: none;
+  height: 100%;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: var(--tran-03);
+}
+.sidebar li a:hover {
+  background-color: var(--primary-color);
+}
+.sidebar li a:hover .icon,
+.sidebar li a:hover .text {
+  color: var(--sidebar-color);
+}
+body.dark .sidebar li a:hover .icon,
+body.dark .sidebar li a:hover .text {
+  color: var(--text-color);
+}
+.sidebar .menu-bar {
+  height: calc(100% - 55px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: scroll;
+}
+.menu-bar::-webkit-scrollbar {
+  display: none;
+}
+.sidebar .menu-bar .mode {
+  border-radius: 6px;
+  background-color: var(--primary-color-light);
+  position: relative;
+  transition: var(--tran-05);
+}
+.menu-bar .mode .sun-moon {
+  height: 50px;
+  width: 60px;
+}
+.mode .sun-moon i {
+  position: absolute;
+}
+.mode .sun-moon i.sun {
+  opacity: 0;
+}
+body.dark .mode .sun-moon i.sun {
+  opacity: 1;
+}
+body.dark .mode .sun-moon i.moon {
+  opacity: 0;
+}
+.menu-bar .bottom-content .toggle-switch {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  min-width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.toggle-switch .switch {
+  position: relative;
+  height: 22px;
+  width: 40px;
+  border-radius: 25px;
+  background-color: var(--toggle-color);
+  transition: var(--tran-05);
+}
+.switch::before {
+  content: "";
+  position: absolute;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  background-color: var(--sidebar-color);
+  transition: var(--tran-04);
+}
+body.dark .switch::before {
+  left: 20px;
+}
+.home {
+  position: absolute;
+  top: 0;
+  top: 0;
+  left: 250px;
+  height: 100vh;
+  width: calc(100% - 250px);
+  background-color: var(--body-color);
+  transition: var(--tran-05);
+}
+.home .text {
+  font-size: 30px;
+  font-weight: 500;
+  color: #2e2e2e;
+  padding: 12px 60px;
+}
+.sidebar.close ~ .home {
+  left: 78px;
+  height: 100vh;
+  width: calc(100% - 78px);
+}
+body.dark .home .text {
+  color: #ccc;
+}
+/* Tidy up the logo in the header (if you decide to use an image there) */
+.image-text .image img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  display: block; /* Ensures it doesn’t overflow or overlap */
+}
+/* Tidy up the nav icons for Overall, LeetCode, and Codeforces */
+.nav-links li a .nav-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 12px; /* Space between icon and text */
+  object-fit: contain;
+}
+.sidebar .nav-icon {
+  min-width: 60px;
+  border-radius: 6px;
+}
+.sidebar .nav-icon {
+  min-width: 60px;
+  border-radius: 6px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+.sidebar .text,
+.sidebar .nav-icon {
+  color: var(--text-color);
+  transition: var(--tran-03);
 }
 
-.sidebar.expanded ~ .main-content {
-  margin-left: 220px;
+/* ----- Main Content Styles ----- */
+.main-content {
+  /* Default state for closed sidebar */
+  margin-left: var(--sidebar-closed-width);
+  width: calc(100% - var(--sidebar-closed-width));
+  padding: 20px;
+  transition: margin-left var(--transition-speed) ease,
+    width var(--transition-speed) ease;
+}
+
+/* When the sidebar is expanded */
+.sidebar:not(.close) ~ .main-content {
+  margin-left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width));
 }
 
 /* HEADER */
@@ -150,17 +336,21 @@ header {
   margin-bottom: 20px;
 }
 
-/* Title (left side) */
-header h1 {
-  font-size: 1.5rem;
-  margin: 0;  /* remove default margin for clean alignment */
+/* HEADER CONTAINER */
+header.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
 }
 
-/* MIDDLE USERNAME CONTAINER */
-.middle-username {
-  flex: 1;                 /* expand to fill the middle space */
-  text-align: center;      /* center the link horizontally */
+/* Left side: Logo and Title */
+.left-header {
+  display: flex;
+  align-items: center;
 }
+
 
 /* The username link */
 .middle-username a {
@@ -263,18 +453,7 @@ header h1 {
 
 /* RESPONSIVE */
 @media screen and (max-width: 768px) {
-  .sidebar {
-    width: 60px;
-  }
-  .sidebar.expanded {
-    width: 200px;
-  }
-  .main-content {
-    margin-left: 60px;
-  }
-  .sidebar.expanded ~ .main-content {
-    margin-left: 200px;
-  }
+
   header {
     flex-direction: column;
     align-items: flex-start;
