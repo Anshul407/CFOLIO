@@ -237,18 +237,23 @@ function drawLineGraph(ratings) {
       canvas.hasTooltipListener = true;
   }
 }
-document.addEventListener("DOMContentLoaded", function() {
-  const sidebar = document.getElementById("sidebar");
-  const toggleBtn = document.getElementById("toggleBtn");
-  toggleBtn.addEventListener("click", function(e) {
-    e.stopPropagation();
-    sidebar.classList.toggle("expanded");
-  });
+const body = document.querySelector("body"),
+sidebar = body.querySelector("nav"),
+toggle = body.querySelector(".toggle"),
 
-  const navLinks = document.querySelectorAll(".nav-links a");
-  navLinks.forEach(link => {
-    link.addEventListener("click", function(e) {
-      e.stopPropagation();
-    });
-  });
+modeSwitch = body.querySelector(".toggle-switch"),
+modeText = body.querySelector(".mode-text");
+
+toggle.addEventListener("click", () => {
+sidebar.classList.toggle("close");
+});
+
+modeSwitch.addEventListener("click", () => {
+body.classList.toggle("dark");
+
+if (body.classList.contains("dark")) {
+  modeText.innerText = "Light mode";
+} else {
+  modeText.innerText = "Dark mode";
+}
 });
