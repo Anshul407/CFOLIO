@@ -7,45 +7,85 @@
   <link rel="icon" href="assets/images/sidebar.jpg" type="image/jpeg">
   <!-- Link to the Codeforces CSS file -->
   <link rel="stylesheet" href="assets/css/codeforces.css" />
+  <link
+  href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css"
+  rel="stylesheet"
+/>
 </head>
 <body>
 
-  <!-- SIDEBAR (Same as LeetCode) -->
-  <nav class="sidebar" id="sidebar">
-    <button class="toggle-btn" id="toggleBtn">
-      <img src="assets/images/sidebar.jpg" alt="Toggle Sidebar" class="toggle-icon" />
-    </button>
-
-    <!-- User Profile Info -->
-    <div class="profile-section">
-      <img src="assets/images/profile.jpg" alt="Profile" class="profile-pic" />
-      <h2 class="username">Samudra</h2>
-      <p class="user-handle">anshul407</p>
-      <p class="user-rank">Rank: 275,986</p>
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+      <header>
+        <div class="image-text">
+      <span class="image">
+        <img
+        src="assets/images/sidebar.png"
+        alt="sidebar Icon"
+        class="nav-icon"
+      />
+      </span>
+      <div class="text logo-text">
+      <span class="user-handle">samudra038</span>
+      </div>
     </div>
-
-    <!-- Navigation Links -->
-    <ul class="nav-links">
+    <i class="bx bx-chevron-right toggle"></i>
+  </header>
+  <div class="menu-bar">
+    <div class="menu">
+      <ul class="nav-links">
+        <li>
+          <a href="overall.html">
+            <img
+              src="assets/images/over.png"
+              alt="Overall Icon"
+              class="nav-icon"
+            />
+            <span class="text logo-text">Overall</span>
+          </a>
+        </li>
+        <li>
+          <a href="LeetCode.html" class="active">
+            <img
+              src="assets/images/lc.png"
+              alt="LeetCode Icon"
+              class="nav-icon"
+            />
+            <span class="text logo-text">LeetCode</span>
+          </a>
+        </li>
+        <li>
+          <a href="codeforces.html">
+            <img
+              src="assets/images/cf.png"
+              alt="Codeforces Icon"
+              class="nav-icon"
+            />
+            <span class="text logo-text">Codeforces</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="bottom-content">
       <li>
-        <a href="overall.html">
-          <img src="assets/images/ovr.png" alt="Overall Icon" class="nav-icon" />
-          <span class="link-text">Overall</span>
+        <a href="#">
+          <i class="bx bx-log-out icon"></i>
+          <span class="text nav-text">Logout</span>
         </a>
       </li>
-      <li>
-        <a href="LeetCode.html">
-          <img src="assets/images/lc.png" alt="LeetCode Icon" class="nav-icon" />
-          <span class="link-text">LeetCode</span>
-        </a>
+      <li class="mode">
+        <div class="sun-moon">
+          <i class="bx bx-moon icon moon"></i>
+          <i class="bx bx-sun icon sun"></i>
+        </div>
+        <span class="mode-text text">Dark mode</span>
+        <div class="toggle-switch">
+          <span class="switch"></span>
+        </div>
       </li>
-      <li>
-        <a href="codeforces.html" class="active">
-          <img src="assets/images/cf.png" alt="Codeforces Icon" class="nav-icon" />
-          <span class="link-text">Codeforces</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
+    </div>
+  </div>
+    </nav>
 
   <!-- MAIN CONTENT -->
   <main class="main-content">
