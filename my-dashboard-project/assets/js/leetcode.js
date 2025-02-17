@@ -15,7 +15,7 @@ const contestRating = 1584;
 const globalRank = "168,092 / 6,668,586";
 const topPercent = "25.16%";
 
-let easy = 0, medium = 0, hard = 0;
+let easy = 100, medium = 200, hard = 50;
 
 // Fetch problem stats from API and update donut chart
 async function assignValue() {
@@ -264,4 +264,25 @@ function renderLineChart(ratings) {
     var lineChart = new ApexCharts(document.querySelector('#contestLineChart'), chartOptions);
     lineChart.render();
   }
+  
+  const body = document.querySelector("body"),
+  sidebar = body.querySelector("nav"),
+  toggle = body.querySelector(".toggle"),
+
+  modeSwitch = body.querySelector(".toggle-switch"),
+  modeText = body.querySelector(".mode-text");
+
+toggle.addEventListener("click", () => {
+  sidebar.classList.toggle("close");
+});
+
+modeSwitch.addEventListener("click", () => {
+  body.classList.toggle("dark");
+
+  if (body.classList.contains("dark")) {
+    modeText.innerText = "Light mode";
+  } else {
+    modeText.innerText = "Dark mode";
+  }
+});
   
