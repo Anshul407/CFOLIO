@@ -7,7 +7,7 @@ let url3='https://codeforces.com/api/user.status?handle=anshul407';
 let url4 = 'https://leetcode-api-faisalshohag.vercel.app/';
 let url5 = 'https://alfa-leetcode-api.onrender.com//contest';
 let url6='https://codeforces.com/api/contest.list';
-
+let cfcontesturl='https://codeforces.com/api/contest.list?';
 if (useridElement2.length > 0) {
     let userid = useridElement2[0].innerText.trim();
     url4 = url4 + userid;
@@ -61,11 +61,29 @@ let assignValue=async()=>{
   document.getElementById("other-solved").textContent = otherSolved;
   updateChart(totalSolved, leetcodeSolved, codeforcesSolved, otherSolved);
   updateHeatmap(dailySubmissions);
+  fetchContest();
   // Update charts
   assignContest();
   
-
 }
+let fetchContest=async()=>{
+  let cur=await fetch(cfcontesturl);
+  let data=await cur.json();
+  const beforeContests = data.result
+  .filter(contest => contest.phase === "BEFORE");
+
+const contestList = document.getElementById("contestList");
+
+beforeContests.forEach(contest => {
+    let li = document.createElement("li");
+    li.textContent = contest.name; // Corrected: Directly using contest.name
+    contestList.appendChild(li);
+});
+
+  
+  console.log(beforeContests);
+}
+
 
 let upcommingContest=async()=>{
     let cur1 = await fetch(url6);
