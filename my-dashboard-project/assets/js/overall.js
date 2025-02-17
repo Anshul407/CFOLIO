@@ -111,44 +111,6 @@ let assignContest=async()=>{
 }
 assignValue();
 //
-// Insert metrics and update charts once DOM is fully loaded
-//
-// document.addEventListener("DOMContentLoaded", function() {
-
-//   document.getElementById("total-solved").textContent = totalSolved;
-//   document.getElementById("leetcode-solved").textContent = leetcodeSolved;
-//   document.getElementById("codeforces-solved").textContent = codeforcesSolved;
-//   document.getElementById("other-solved").textContent = otherSolved;
-
-//   // Update charts
-//   updateChart(totalSolved, leetcodeSolved, codeforcesSolved, otherSolved);
-//   updateAreaChart(leetCodeRating, codeForcesRating);
-//   updateHeatmap(dailySubmissions);
-// });
-
-//
-// Sidebar and Navigation Listeners
-//
-document.addEventListener("DOMContentLoaded", function() {
-  const sidebar = document.getElementById("sidebar");
-  const toggleBtn = document.getElementById("toggleBtn");
-
-  // Toggle sidebar only when the toggle button is clicked
-  toggleBtn.addEventListener("click", function(e) {
-    e.stopPropagation();
-    sidebar.classList.toggle("expanded");
-  });
-
-  // Prevent nav link clicks from toggling the sidebar
-  const navLinks = document.querySelectorAll(".nav-links a");
-  navLinks.forEach(link => {
-    link.addEventListener("click", function(e) {
-      e.stopPropagation();
-    });
-  });
-});
-
-//
 // --- Chart Update Functions ---
 //
 
@@ -368,5 +330,24 @@ function updateHeatmap(totalSubmissions, acceptedSubmissions) {
   window.heatmapChart = new ApexCharts(document.querySelector("#heatmapChart"), options);
   window.heatmapChart.render();
 }
+const body = document.querySelector("body"),
+sidebar = body.querySelector("nav"),
+toggle = body.querySelector(".toggle"),
 
+modeSwitch = body.querySelector(".toggle-switch"),
+modeText = body.querySelector(".mode-text");
+
+toggle.addEventListener("click", () => {
+sidebar.classList.toggle("close");
+});
+
+modeSwitch.addEventListener("click", () => {
+body.classList.toggle("dark");
+
+if (body.classList.contains("dark")) {
+  modeText.innerText = "Light mode";
+} else {
+  modeText.innerText = "Dark mode";
+}
+});
 
