@@ -1,16 +1,30 @@
-/* leetcode.css */
 
-/* 
-  Dark theme with orange accent (#F89C2C).
-  Adjust any of these variables to change colors.
-*/
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+/* Define sidebar width variables */
 :root {
-  --background-color: #1F1F1F;
-  --sidebar-color: #2A2A2A;
-  --text-color: #FFFFFF;
-  --accent-color: #F89C2C;
-  --card-bg-color: #333333;
+  --sidebar-width: 250px; /* Full width when expanded */
+  --sidebar-closed-width: 88px; /* Width when sidebar is closed */
   --transition-speed: 0.3s;
+  /* ===== Colors ===== */
+  --body-color: #f3f4f6;       /* Light gray background for the entire page */
+  --sidebar-color: #ffffff;     /* Clean white sidebar */
+  --primary-color: #f89c2c;     /* Subtle neutral for hover backgrounds, etc. */
+  --primary-color-light: #f9fafb; /* Even lighter neutral for toggles, etc. */
+  --toggle-color: #ccc;         /* Slider track color */
+  --text-color: #2e2e2e;        /* Dark text for readability */
+  --accent-color: #f89c2c;      /* Keep your signature orange accent */
+  --card-bg-color: #ffffff;
+  /* ====== Transition ====== */
+  --transition-speed: 0.3s;
+  --tran-03: all 0.3s ease;
+  --tran-04: all 0.3s ease;
+  --tran-05: all 0.3s ease;
 }
 
 * {
@@ -21,129 +35,295 @@
 }
 
 body {
-  background-color: var(--background-color);
-  color: var(--text-color);
+  min-height: 100vh;
+  background-color: var(--body-color);
+  transition: var(--tran-05);
 }
-
-/* SIDEBAR */
+::selection {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+body.dark {
+  --body-color: #18191a;
+  --sidebar-color: #242526;
+  --primary-color: #3a3b3c;
+  --primary-color-light: #3a3b3c;
+  --toggle-color: #fff;
+  --text-color: #ccc;
+  --accent-color: #f89c2c;
+  --card-bg-color: #333333;
+}
+/* ===== Sidebar ===== */
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
-  width: 70px; /* default collapsed width */
-  height: 100vh;
-  background-color: var(--sidebar-color);
-  padding: 10px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  height: 100%;
+  width: var(--sidebar-width);
+  padding: 10px 14px;
+  background: var(--sidebar-color);
+  /* Transition only the width for a smoother effect */
   transition: width var(--transition-speed) ease;
-  z-index: 99;
+  z-index: 100;
 }
 
-.sidebar.expanded {
-  width: 220px; /* expanded width */
+.sidebar.close {
+  width: var(--sidebar-closed-width);
 }
 
-/* Toggle button */
-.toggle-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  margin-bottom: 20px;
-  align-self: flex-end;
-  transition: transform var(--transition-speed) ease;
-}
-
-.toggle-icon {
-  width: 32px;
-  height: 32px;
-}
-
-/* PROFILE SECTION */
-.profile-section {
-  text-align: center;
-  margin-bottom: 30px;
-  transition: opacity var(--transition-speed) ease;
-}
-
-.profile-pic {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  margin-bottom: 8px;
-}
-
-.username {
-  font-size: 1rem;
-  margin-bottom: 4px;
-}
-
-.user-handle,
-.user-rank {
-  font-size: 0.85rem;
-  color: #cccccc;
-}
-
-/* Hide user details if collapsed */
-.sidebar:not(.expanded) .profile-section .username,
-.sidebar:not(.expanded) .profile-section .user-handle,
-.sidebar:not(.expanded) .profile-section .user-rank {
-  display: none;
-}
-
-/* NAV LINKS */
-.nav-links {
+/* ===== Reusable code - Here ===== */
+.sidebar li {
+  height: 50px;
   list-style: none;
-  padding: 0;
-  flex: 1; /* push them to fill space */
-}
-
-.nav-links li {
-  margin-bottom: 15px;
-}
-
-.nav-links a {
   display: flex;
   align-items: center;
-  color: #cccccc;
-  text-decoration: none;
-  padding: 8px;
-  border-radius: 4px;
-  transition: background-color var(--transition-speed) ease;
+  margin-top: 10px;
 }
-
-.nav-links a.active {
-  background-color: var(--accent-color);
-  color: #fff;
+.sidebar header .image,
+.sidebar .icon {
+  min-width: 60px;
+  border-radius: 6px;
 }
-
-.nav-links a:hover {
-  background-color: #383838;
+.sidebar .icon {
+  min-width: 60px;
+  border-radius: 6px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
 }
-
-.nav-icon {
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
+.sidebar .text,
+.sidebar .icon {
+  color: var(--text-color);
+  transition: var(--tran-03);
 }
-
-/* Hide link text if collapsed */
-.sidebar:not(.expanded) .link-text {
+.sidebar .text {
+  font-size: 17px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 1;
+}
+.sidebar.close .text {
   display: none;
 }
-
-/* MAIN CONTENT */
-.main-content {
-  margin-left: 70px; /* match the default collapsed width */
-  padding: 20px;
-  transition: margin-left var(--transition-speed) ease;
+/* =========================== */
+.sidebar header {
+  position: relative;
+}
+.sidebar header .image-text {
+  display: flex;
+  align-items: center;
+}
+.sidebar header .logo-text {
+  display: flex;
+  flex-direction: column;
+}
+header .image-text .name {
+  margin-top: 2px;
+  font-size: 18px;
+  font-weight: 600;
+}
+header .image-text .profession {
+  font-size: 16px;
+  margin-top: -2px;
+  display: block;
+}
+.sidebar header .image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sidebar header .image img {
+  width: 40px;
+  border-radius: 6px;
+}
+.sidebar header .toggle {
+  position: absolute;
+  top: 50%;
+  right: -25px;
+  transform: translateY(-50%) rotate(180deg);
+  height: 25px;
+  width: 25px;
+  background-color: var(--primary-color);
+  color: var(--sidebar-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  cursor: pointer;
+  transition: var(--tran-05);
+}
+body.dark .sidebar header .toggle {
+  color: var(--text-color);
+}
+.sidebar.close .toggle {
+  transform: translateY(-50%) rotate(0deg);
+}
+.sidebar .menu {
+  margin-top: 40px;
+}
+.sidebar li a {
+  list-style: none;
+  height: 100%;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: var(--tran-03);
+}
+.sidebar li a:hover {
+  background-color: var(--primary-color);
+}
+.sidebar li a:hover .icon,
+.sidebar li a:hover .text {
+  color: var(--sidebar-color);
+}
+body.dark .sidebar li a:hover .icon,
+body.dark .sidebar li a:hover .text {
+  color: var(--text-color);
+}
+.sidebar .menu-bar {
+  height: calc(100% - 55px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: scroll;
+}
+.menu-bar::-webkit-scrollbar {
+  display: none;
+}
+.sidebar .menu-bar .mode {
+  border-radius: 6px;
+  background-color: var(--primary-color-light);
+  position: relative;
+  transition: var(--tran-05);
+}
+.menu-bar .mode .sun-moon {
+  height: 50px;
+  width: 60px;
+}
+.mode .sun-moon i {
+  position: absolute;
+}
+.mode .sun-moon i.sun {
+  opacity: 0;
+}
+body.dark .mode .sun-moon i.sun {
+  opacity: 1;
+}
+body.dark .mode .sun-moon i.moon {
+  opacity: 0;
+}
+.menu-bar .bottom-content .toggle-switch {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  min-width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.toggle-switch .switch {
+  position: relative;
+  height: 22px;
+  width: 40px;
+  border-radius: 25px;
+  background-color: var(--toggle-color);
+  transition: var(--tran-05);
+}
+.switch::before {
+  content: "";
+  position: absolute;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  background-color: var(--sidebar-color);
+  transition: var(--tran-04);
+}
+body.dark .switch::before {
+  left: 20px;
+}
+.home {
+  position: absolute;
+  top: 0;
+  top: 0;
+  left: 250px;
+  height: 100vh;
+  width: calc(100% - 250px);
+  background-color: var(--body-color);
+  transition: var(--tran-05);
+}
+.home .text {
+  font-size: 30px;
+  font-weight: 500;
+  color: #2e2e2e;
+  padding: 12px 60px;
+}
+.sidebar.close ~ .home {
+  left: 78px;
+  height: 100vh;
+  width: calc(100% - 78px);
+}
+body.dark .home .text {
+  color: #ccc;
+}
+/* Tidy up the logo in the header (if you decide to use an image there) */
+.image-text .image img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  display: block; /* Ensures it doesn’t overflow or overlap */
+}
+/* Tidy up the nav icons for Overall, LeetCode, and Codeforces */
+.nav-links li a .nav-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 12px; /* Space between icon and text */
+  object-fit: contain;
+}
+.sidebar .nav-icon {
+  min-width: 60px;
+  border-radius: 6px;
+}
+.sidebar .nav-icon {
+  min-width: 60px;
+  border-radius: 6px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+.sidebar .text,
+.sidebar .nav-icon {
+  color: var(--text-color);
+  transition: var(--tran-03);
 }
 
-/* If sidebar is expanded, push the main content */
-.sidebar.expanded ~ .main-content {
-  margin-left: 220px;
+/* ----- Main Content Styles ----- */
+.main-content {
+  /* Default state for closed sidebar */
+  margin-left: var(--sidebar-closed-width);
+  width: calc(100% - var(--sidebar-closed-width));
+  padding: 20px;
+  transition: margin-left var(--transition-speed) ease,
+    width var(--transition-speed) ease;
+}
+
+/* When the sidebar is expanded */
+.sidebar:not(.close) ~ .main-content {
+  margin-left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width));
 }
 
 /* HEADER CONTAINER */
@@ -162,8 +342,8 @@ header.header-container {
 }
 
 .leetcode-logo {
-  height: 55px;       /* Adjust the height as needed */
-  width: auto;        /* Maintain aspect ratio */
+  height: 55px; /* Adjust the height as needed */
+  width: auto; /* Maintain aspect ratio */
   margin-right: 250px; /* Space between logo and title */
 }
 
@@ -180,7 +360,7 @@ header.header-container {
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
-  background: rgba(255, 255, 255, 0.1);  /* Mild translucent white */
+  background: rgba(255, 255, 255, 0.1); /* Mild translucent white */
   padding: 8px 16px;
   border-radius: 8px;
   transition: background 0.3s ease, transform 0.3s ease;
@@ -188,7 +368,7 @@ header.header-container {
 
 /* Username link styling */
 .middle-username a {
-  color: #fff;                /* Start with white text */
+  color: #fff; /* Start with white text */
   text-decoration: none;
   font-weight: bold;
   font-size: 1rem;
@@ -197,19 +377,17 @@ header.header-container {
 
 /* Hover state for the username link */
 .middle-username a:hover {
-  color: #19c37d;             /* Change to a ChatGPT-like green on hover */
+  color: #19c37d; /* Change to a ChatGPT-like green on hover */
   transform: scale(1.03);
 }
 
 /* Hover state for the container */
 .middle-username:hover {
-  background: rgba(255, 255, 255, 0.2);  /* Slightly more opaque on hover */
+  background: rgba(255, 255, 255, 0.2); /* Slightly more opaque on hover */
   transform: scale(1.02);
 }
 
-
 /* Rating info on the right remains unchanged */
-
 
 .rating-info {
   display: flex;
@@ -218,7 +396,7 @@ header.header-container {
 }
 
 .rating-info > div {
-  background: linear-gradient(135deg, #2A2A2A, #3A3A3A);
+  background: linear-gradient(135deg, #2a2a2a, #3a3a3a);
   border: 1px solid #444;
   border-radius: 8px;
   padding: 10px 15px;
@@ -267,7 +445,7 @@ header.header-container {
 
 .chart-container {
   /* If you want to reduce spacing under the charts */
-  margin-bottom: 10px; 
+  margin-bottom: 10px;
 }
 
 /* If you have a large margin below .stats or .stat-card, tighten them: */
@@ -277,7 +455,6 @@ header.header-container {
 .stat-card {
   margin-bottom: 0; /* if there's any bottom margin */
 }
-
 
 /* STATS SECTION */
 .stats {
@@ -345,27 +522,48 @@ header.header-container {
 }
 
 .box {
-  background-color:"transparent";
+  background-color: "transparent";
   padding: 25px 20px;
-  
 }
-
 
 /* ------------------ UNIFIED CARD STYLES & HOVER EFFECTS ------------------ */
 /* Apply the same gradient, border, and shadow to all major containers */
-.profile-section,
-.stat-card,
-.rating-info > div,
+/* Light mode - Chart section */
 .chart-section {
-  background: linear-gradient(135deg, #2A2A2A, #3A3A3A);
-  border: 1px solid #444;
+  background: "transparent"; /* White (or another color) in light mode */
+  border: 1px solid #ddd;
   border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Light mode - Stat cards and rating info */
+.stat-card,
+.rating-info > div {
+  background: var(--card-bg-color); /* White (or another color) in light mode */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Dark mode - Chart section */
+body.dark .chart-section {
+  background: "transparent";
+  border: 1px solid #444;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Dark mode - Stat cards and rating info */
+body.dark .stat-card,
+body.dark .rating-info > div {
+  background: linear-gradient(135deg, #2a2a2a, #3a3a3a);
+  border: 1px solid #444;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
 /* Lift the container on hover */
-.profile-section:hover,
 .stat-card:hover,
 .rating-info > div:hover,
 .chart-section:hover {
@@ -388,21 +586,15 @@ header.header-container {
   font-weight: bold;
   margin: 0;
 }
+body:not(.dark) .apexcharts-canvas {
+  background: #ffffff !important;
+}
 
+body.dark .apexcharts-canvas {
+  background: #333333 !important;
+}
 /* ------------------ RESPONSIVE (SMALLER SCREENS) ------------------ */
 @media screen and (max-width: 768px) {
-  .sidebar {
-    width: 60px;
-  }
-  .sidebar.expanded {
-    width: 200px;
-  }
-  .main-content {
-    margin-left: 60px;
-  }
-  .sidebar.expanded ~ .main-content {
-    margin-left: 200px;
-  }
   header.header-container {
     flex-direction: column;
     align-items: flex-start;
