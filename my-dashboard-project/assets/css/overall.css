@@ -494,3 +494,22 @@ header.header-container {
     font-size: 0.75rem;
   }
 }
+
+/*legends of rating line graph means 2nd one*/
+.legend-btn {
+  padding: 8px 12px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.legend-btn.active {
+  opacity: 1;
+}
+
+.legend-btn:not(.active) {
+  opacity: 0.4;
+}
