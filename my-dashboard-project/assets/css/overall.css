@@ -411,3 +411,86 @@ header.header-container {
     align-items: flex-start;
   }
 }
+/* Upcoming Contest Section */
+.contest-section {
+  background-color: var(--card-bg-color);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  transition: var(--tran-03);
+}
+
+.contest-section h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+#contestList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+#contestList li {
+  background-color: var(--card-bg-color);
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: var(--tran-03);
+}
+
+#contestList li:hover {
+  background-color: var(--primary-color);
+  color: var(--sidebar-color);
+  cursor: pointer;
+}
+
+#contestList li .date {
+  font-size: 0.875rem;
+  color: var(--accent-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .contest-section {
+    padding: 15px;
+  }
+
+  .contest-section h2 {
+    font-size: 1rem;
+  }
+
+  #contestList li {
+    font-size: 0.875rem;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contest-section {
+    padding: 10px;
+  }
+
+  #contestList li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #contestList li .date {
+    margin-top: 5px;
+    font-size: 0.75rem;
+  }
+}
