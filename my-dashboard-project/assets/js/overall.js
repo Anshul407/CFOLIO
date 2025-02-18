@@ -240,7 +240,10 @@ function updateAreaChart(leetCodeRating, codeForcesRating) {
     categories.push("Contest " + i);
   }
 
-  var optionsArea = {
+  let leetCodeVisible = true;
+  let codeForcesVisible = true;
+
+  let chartOptions = {
     chart: {
       height: 380,
       type: 'area',
@@ -249,12 +252,13 @@ function updateAreaChart(leetCodeRating, codeForcesRating) {
     stroke: {
       curve: 'straight'
     },
-    series: [{
-        name: "LeetCode Rating",
+    series: [
+      {
+        name: "LeetCode",
         data: leetCodeRating
       },
       {
-        name: "CodeForces Rating",
+        name: "CodeForces",
         data: codeForcesRating
       }
     ],
@@ -264,7 +268,6 @@ function updateAreaChart(leetCodeRating, codeForcesRating) {
     tooltip: {
       followCursor: true
     },
-    // Set base colors: red for LeetCode and blue for CodeForces.
     colors: ['#FF0000', '#0000FF'],
     fill: {
       type: 'gradient',
@@ -276,14 +279,54 @@ function updateAreaChart(leetCodeRating, codeForcesRating) {
         stops: [0, 100]
       }
     },
+    legend: {
+      show: false // Hide default legend
+    }
   };
 
   if (window.areaChart && typeof window.areaChart.destroy === "function") {
     window.areaChart.destroy();
   }
 
-  window.areaChart = new ApexCharts(document.querySelector("#areachart"), optionsArea);
+  window.areaChart = new ApexCharts(document.querySelector("#areachart"), chartOptions);
   window.areaChart.render();
+
+  // Add Custom Legend Buttons
+  let legendContainer = document.getElementById("custom-legend");
+  legendContainer.innerHTML = `
+    <button id="leetCodeLegend" class="legend-btn active" style="background-color: #FF0000;">LeetCode</button>
+    <button id="codeForcesLegend" class="legend-btn active" style="background-color: #0000FF;">CodeForces</button>
+  `;
+
+  document.getElementById("leetCodeLegend").addEventListener("click", function () {
+    leetCodeVisible = !leetCodeVisible;
+    toggleSeries();
+    this.classList.toggle("active", leetCodeVisible);
+  });
+
+  document.getElementById("codeForcesLegend").addEventListener("click", function () {
+    codeForcesVisible = !codeForcesVisible;
+    toggleSeries();
+    this.classList.toggle("active", codeForcesVisible);
+  });
+
+  function toggleSeries() {
+    let seriesData = [];
+    if (leetCodeVisible) {
+      seriesData.push({
+        name: "LeetCode",
+        data: leetCodeRating
+      });
+    }
+    if (codeForcesVisible) {
+      seriesData.push({
+        name: "CodeForces",
+        data: codeForcesRating
+      });
+    }
+
+    window.areaChart.updateSeries(seriesData);
+  }
 }
 
 // 3. Heatmap Chart for Daily Submissions (Green Gradient remains unchanged)
