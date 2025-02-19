@@ -34,10 +34,7 @@ let otherSolved = 0;
 let aggregateRating = [70, 65, 80, 75, 90, 85, 95, 88, 70, 75, 80, 85, 92, 78, 88, 79, 85, 80, 75, 78, 90, 92, 85, 80, 78, 85, 80, 90, 95, 85];
 let overallRanking = [10, 12, 9, 11, 8, 9, 7, 8, 12, 11, 10, 9, 6, 8, 7, 9, 8, 10, 12, 11, 8, 7, 9, 10, 11, 8, 9, 7, 6, 8];
 
-let dailySubmissions = [
-  12, 18, 22, 15, 9, 28, 30, 20, 25, 18, 10, 16, 22, 27, 14,
-  19, 24, 29, 21, 13, 17, 26, 31, 23, 11, 15, 28, 30, 20, 25
-];
+let dailySubmissions = {};
 
 // --- New Ratings Data for the Area Chart ---
 let leetCodeRating = [];      // Sample data for LeetCode Rating
@@ -63,9 +60,43 @@ let assignValue=async()=>{
   updateHeatmap(dailySubmissions);
   fetchContest();
   // Update charts
+  getDailySubmissions(useridElement[0].innerText.trim());
   assignContest();
   
 }
+async function getDailySubmissions(handle) {
+  try {
+      const response = await fetch(`https://codeforces.com/api/user.status?handle=${handle}`);
+      const data = await response.json();
+
+      if (data.status !== "OK") {
+          console.error("Error fetching data:", data.comment);
+          return;
+      }
+
+      const submissions = data.result;
+      const now = Math.floor(Date.now() / 1000); // Current time in seconds
+      const fourMonthsAgo = now - 4 * 30 * 24 * 60 * 60; // Approx 4 months ago in seconds
+
+      
+
+      submissions.forEach(submission => {
+          if (submission.creationTimeSeconds >= fourMonthsAgo) {
+              const date = new Date(submission.creationTimeSeconds * 1000).toISOString().split('T')[0]; // YYYY-MM-DD
+              dailySubmissions[date] = (dailySubmissions[date] || 0) + 1;
+          }
+      });
+      console.log(dailySubmissions);
+
+       // Output result
+  } catch (error) {
+      console.error("Error fetching submissions:", error);
+  }
+}
+
+// Example usage:
+ // Replace with any Codeforces handle
+
 let fetchContest = async () => {
   // Fetch contest data
   let cur = await fetch(cfcontesturl);
