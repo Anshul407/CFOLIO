@@ -343,20 +343,28 @@ function updateAreaChart(leetCodeRating, codeForcesRating) {
 
   function toggleSeries() {
     let seriesData = [];
+    let colors = [];
+
     if (leetCodeVisible) {
-      seriesData.push({
-        name: "LeetCode",
-        data: leetCodeRating
-      });
-    }
-    if (codeForcesVisible) {
-      seriesData.push({
-        name: "CodeForces",
-        data: codeForcesRating
-      });
+        seriesData.push({
+            name: "LeetCode",
+            data: leetCodeRating
+        });
+        colors.push("#FF0000"); // Red for LeetCode
     }
 
-    window.areaChart.updateSeries(seriesData);
+    if (codeForcesVisible) {
+        seriesData.push({
+            name: "CodeForces",
+            data: codeForcesRating
+        });
+        colors.push("#0000FF"); // Blue for CodeForces
+    }
+
+    window.areaChart.updateOptions({
+        series: seriesData,
+        colors: colors
+    });
   }
 }
 
