@@ -60,7 +60,6 @@ let assignValue=async()=>{
   document.getElementById("other-solved").textContent = otherSolved;
   await updateChart(totalSolved, leetcodeSolved, codeforcesSolved, otherSolved);
   await fetchContest();
-  // Update charts
   await getDailySubmissions(useridElement[0].innerText.trim());
   await assignContest();
   await updateHeatmap(dailySubmissions); 
@@ -126,8 +125,7 @@ let fetchContest = async () => {
       contestList.appendChild(li);
   });
 
-  // Optionally log the beforeContests array (if needed)
-  console.log(beforeContests);  // Ensure beforeContests is defined or passed properly if required
+  
 };
 let assignContest=async()=>{
   let cur = await fetch(url5);
