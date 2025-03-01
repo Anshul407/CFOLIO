@@ -369,28 +369,36 @@ function updateAreaChart(leetCodeRating, codeForcesRating) {
     });
   }
 }
-
+// 3. Heatmap for total submission
 function generateAndUpdateHeatmap(count, totalSubmissions, acceptedSubmissions) {
-  function generateData(count, totalSubmissions, acceptedSubmissions) {
+  // Generate data for each matrix series (each representing a count on that day)
+  function generateData(count, totalSubmissions, acceptedSubmissions, matrixIndex) {
     let data = [];
     let submissionRatio = acceptedSubmissions / totalSubmissions;
+    let startDate = new Date();
 
     for (let i = 0; i < count; i++) {
-      let randomValue = Math.floor(Math.random() * 91); // Random value between 0-90
-      let adjustedValue = Math.floor(randomValue * submissionRatio); // Adjusted by acceptance ratio
+      let randomValue = Math.floor(Math.random() * 91); // Random value between 0 and 90
+      // Adjust value based on submission ratio with slight variation per matrix
+      let adjustedValue = Math.floor(randomValue * submissionRatio) + matrixIndex * 5;
+      
+      // Create a date by adding i days to the start date
+      let date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
+      let formattedDate = date.toISOString().split("T")[0];
 
       data.push({
-        x: `Category ${i + 1}`,
-        y: adjustedValue
+        x: formattedDate, // Date category on x-axis
+        y: adjustedValue  // Count value for that day
       });
     }
     return data;
   }
 
-  const metricsCount = 9;
-  const series = Array.from({ length: metricsCount }, (_, index) => ({
-    name: `Metric${index + 1}`,
-    data: generateData(count, totalSubmissions, acceptedSubmissions)
+  const matricesCount = 5; // e.g., Matrix1, Matrix2, etc.
+  // Create series without a "name" so the y-axis won't display matrix labels
+  const series = Array.from({ length: matricesCount }, (_, index) => ({
+    name: "",
+    data: generateData(count, totalSubmissions, acceptedSubmissions, index)
   }));
 
   var options = {
@@ -398,50 +406,67 @@ function generateAndUpdateHeatmap(count, totalSubmissions, acceptedSubmissions) 
     chart: {
       height: 400,
       type: 'heatmap',
+      // Lighter background instead of dark
+      background: '#ffffff',
       toolbar: { show: false },
-      animations: { enabled: true, easing: 'easeinout', speed: 800 }
+      animations: { enabled: true, easing: 'easeinout', speed: 800 },
+      dropShadow: { 
+        enabled: true,
+        color: '#000',
+        top: 2,
+        left: 2,
+        blur: 4,
+        opacity: 0.1  // Subtle shadow so cells pop on a light background
+      }
     },
-    dataLabels: { enabled: false },
-    
-    colors: ["#3498db"], // Base blue, ApexCharts auto-shades it
-
+    // Enable data labels to show the count value in each cell
+    dataLabels: {
+      enabled: true,
+      formatter: function(val) {
+        return val;
+      },
+      style: {
+        // Dark text on light background
+        colors: ['#333']
+      }
+    },
     plotOptions: {
       heatmap: {
         shadeIntensity: 0.8,
         radius: 0, // Square cells
         useFillColorAsStroke: true,
         colorScale: {
+          // LeetCode-style green color scale (dark-to-bright green)
           ranges: [
-            { from: 0, to: 20, color: "#2c7be5" },   // Deep blue (cold)
-            { from: 21, to: 40, color: "#6a5acd" },  // Soft purple
-            { from: 41, to: 60, color: "#a333c8" },  // Vibrant purple
-            { from: 61, to: 80, color: "#d6279a" },  // Magenta
-            { from: 81, to: 100, color: "#ff5733" }  // Fiery red (hot)
+            { from: 0,  to: 20,  color: "#0e4429" },
+            { from: 21, to: 40,  color: "#006d32" },
+            { from: 41, to: 60,  color: "#26a641" },
+            { from: 61, to: 80,  color: "#39d353" },
+            { from: 81, to: 100, color: "#9be9a8" }
           ]
         }
       }
     },
-    
     xaxis: {
-      labels: { style: { colors: "#666", fontSize: "12px", fontWeight: 600 } }
+      type: 'datetime',  // x-axis displays dates
+      labels: { style: { colors: "#333", fontSize: "12px", fontWeight: 600 } }
     },
+    // Hide y-axis labels since we want to display count values inside the cells
     yaxis: {
-      labels: { style: { colors: "#666", fontSize: "12px", fontWeight: 600 } }
+      labels: { show: false }
     },
-    
     title: {
-      text: `🔥 Submissions HeatMap (Total: ${totalSubmissions}, Accepted: ${acceptedSubmissions})`,
+      text: `Contest Performance Heatmap (Total: ${totalSubmissions}, Accepted: ${acceptedSubmissions})`,
       align: 'center',
       style: { fontSize: '18px', fontWeight: 'bold', color: '#333' }
     },
-    
     tooltip: {
       enabled: true,
-      theme: "dark"
+      theme: "light" // Matches the lighter background
     }
   };
 
-  // Destroy existing chart before creating a new one
+  // Destroy existing chart instance if present before rendering a new one
   if (window.heatmapChart && typeof window.heatmapChart.destroy === "function") {
     window.heatmapChart.destroy();
   }
@@ -449,6 +474,7 @@ function generateAndUpdateHeatmap(count, totalSubmissions, acceptedSubmissions) 
   window.heatmapChart = new ApexCharts(document.querySelector("#heatmapChart"), options);
   window.heatmapChart.render();
 }
+
 const body = document.querySelector("body"),
 sidebar = body.querySelector("nav"),
 toggle = body.querySelector(".toggle"),
