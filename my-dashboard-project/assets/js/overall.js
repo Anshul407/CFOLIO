@@ -35,6 +35,8 @@ let aggregateRating = [70, 65, 80, 75, 90, 85, 95, 88, 70, 75, 80, 85, 92, 78, 8
 let overallRanking = [10, 12, 9, 11, 8, 9, 7, 8, 12, 11, 10, 9, 6, 8, 7, 9, 8, 10, 12, 11, 8, 7, 9, 10, 11, 8, 9, 7, 6, 8];
 
 let dailySubmissions = {};
+//heatmap call
+generateAndUpdateHeatmap(18, 500, 300);
 
 // --- New Ratings Data for the Area Chart ---
 let leetCodeRating = [];      // Sample data for LeetCode Rating
@@ -368,74 +370,75 @@ function updateAreaChart(leetCodeRating, codeForcesRating) {
   }
 }
 
-// 3. Heatmap Chart for Daily Submissions (Green Gradient remains unchanged)
-function generateData(count, totalSubmissions, acceptedSubmissions) {
-  let data = [];
-  for (let i = 0; i < count; i++) {
+function generateAndUpdateHeatmap(count, totalSubmissions, acceptedSubmissions) {
+  function generateData(count, totalSubmissions, acceptedSubmissions) {
+    let data = [];
     let submissionRatio = acceptedSubmissions / totalSubmissions;
-    let randomValue = Math.floor(Math.random() * (90 - 0 + 1)) + 0; // Random value between 0-90
-    
-    // Adjust value based on acceptance ratio
-    let adjustedValue = Math.floor(randomValue * submissionRatio);
 
-    data.push({
-      x: `Category ${i + 1}`,
-      y: adjustedValue
-    });
+    for (let i = 0; i < count; i++) {
+      let randomValue = Math.floor(Math.random() * 91); // Random value between 0-90
+      let adjustedValue = Math.floor(randomValue * submissionRatio); // Adjusted by acceptance ratio
+
+      data.push({
+        x: `Category ${i + 1}`,
+        y: adjustedValue
+      });
+    }
+    return data;
   }
-  return data;
-}
 
-function updateHeatmap(totalSubmissions, acceptedSubmissions) {
+  const metricsCount = 9;
+  const series = Array.from({ length: metricsCount }, (_, index) => ({
+    name: `Metric${index + 1}`,
+    data: generateData(count, totalSubmissions, acceptedSubmissions)
+  }));
+
   var options = {
-    series: [
-      { name: 'Metric1', data: generateData(18, totalSubmissions, acceptedSubmissions) },
-      { name: 'Metric2', data: generateData(18, totalSubmissions, acceptedSubmissions) },
-      { name: 'Metric3', data: generateData(18, totalSubmissions, acceptedSubmissions) },
-      { name: 'Metric4', data: generateData(18, totalSubmissions, acceptedSubmissions) },
-      { name: 'Metric5', data: generateData(18, totalSubmissions, acceptedSubmissions) },
-      { name: 'Metric6', data: generateData(18, totalSubmissions, acceptedSubmissions) },
-      { name: 'Metric7', data: generateData(18, totalSubmissions, acceptedSubmissions) },
-      { name: 'Metric8', data: generateData(18, totalSubmissions, acceptedSubmissions) },
-      { name: 'Metric9', data: generateData(18, totalSubmissions, acceptedSubmissions) }
-    ],
+    series: series,
     chart: {
-      height: 350,
+      height: 400,
       type: 'heatmap',
+      toolbar: { show: false },
+      animations: { enabled: true, easing: 'easeinout', speed: 800 }
     },
-    dataLabels: {
-      enabled: false
-    },
-    colors: ["#90EE90"], // Light green color
+    dataLabels: { enabled: false },
     
+    colors: ["#3498db"], // Base blue, ApexCharts auto-shades it
+
     plotOptions: {
       heatmap: {
-        shadeIntensity: 0.5,
+        shadeIntensity: 0.8,
+        radius: 0, // Square cells
+        useFillColorAsStroke: true,
         colorScale: {
           ranges: [
-            {
-              from: 0,
-              to: 30,
-              color: "#A2D5A2" // Light green
-            },
-            {
-              from: 31,
-              to: 60,
-              color: "#66C266" // Medium green
-            },
-            {
-              from: 61,
-              to: 100,
-              color: "#28A745" // Dark green
-            }
+            { from: 0, to: 20, color: "#2c7be5" },   // Deep blue (cold)
+            { from: 21, to: 40, color: "#6a5acd" },  // Soft purple
+            { from: 41, to: 60, color: "#a333c8" },  // Vibrant purple
+            { from: 61, to: 80, color: "#d6279a" },  // Magenta
+            { from: 81, to: 100, color: "#ff5733" }  // Fiery red (hot)
           ]
         }
       }
     },
-
-    title: {
-      text: `Submissions HeatMap (Total: ${totalSubmissions}, Accepted: ${acceptedSubmissions})`
+    
+    xaxis: {
+      labels: { style: { colors: "#666", fontSize: "12px", fontWeight: 600 } }
     },
+    yaxis: {
+      labels: { style: { colors: "#666", fontSize: "12px", fontWeight: 600 } }
+    },
+    
+    title: {
+      text: `🔥 Submissions HeatMap (Total: ${totalSubmissions}, Accepted: ${acceptedSubmissions})`,
+      align: 'center',
+      style: { fontSize: '18px', fontWeight: 'bold', color: '#333' }
+    },
+    
+    tooltip: {
+      enabled: true,
+      theme: "dark"
+    }
   };
 
   // Destroy existing chart before creating a new one
