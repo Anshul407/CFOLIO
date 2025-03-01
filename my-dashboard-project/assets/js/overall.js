@@ -58,13 +58,12 @@ let assignValue=async()=>{
   document.getElementById("leetcode-solved").textContent = leetcodeSolved;
   document.getElementById("codeforces-solved").textContent = codeforcesSolved;
   document.getElementById("other-solved").textContent = otherSolved;
-  updateChart(totalSolved, leetcodeSolved, codeforcesSolved, otherSolved);
-  updateHeatmap(dailySubmissions);
-  fetchContest();
+  await updateChart(totalSolved, leetcodeSolved, codeforcesSolved, otherSolved);
+  await fetchContest();
   // Update charts
-  getDailySubmissions(useridElement[0].innerText.trim());
-  assignContest();
-  
+  await getDailySubmissions(useridElement[0].innerText.trim());
+  await assignContest();
+  await updateHeatmap(dailySubmissions); 
 }
 async function getDailySubmissions(handle) {
   try {
@@ -130,33 +129,6 @@ let fetchContest = async () => {
   // Optionally log the beforeContests array (if needed)
   console.log(beforeContests);  // Ensure beforeContests is defined or passed properly if required
 };
-
-
-
-
-let upcommingContest=async()=>{
-    let cur1 = await fetch(url6);
-    let data1 = await cur1.json();
-    const upcomingContests = data1.result.filter(contest => contest.phase === "BEFORE");
-    upcomingContests.sort((a, b) => a.startTimeSeconds - b.startTimeSeconds);
-    console.log(upcomingContests);
-    const contestsHtml = upcomingContests
-        .map(
-            (contest) => `
-                <div class="contest">
-                    <h3>${contest.name}</h3>
-                    <p><strong>Start Time:</strong> ${new Date(contest.startTimeSeconds * 1000).toLocaleString()}</p>
-                    <p><strong>Duration:</strong> ${contest.durationSeconds / 3600} hours</p>
-                </div>
-            `
-        )
-        .join("");
-    // Render contests in the container
-    document.getElementById("contest-container").innerHTML=contestsHtml;
-    
-    
-}
-upcommingContest();
 let assignContest=async()=>{
   let cur = await fetch(url5);
   let data = await cur.json();
