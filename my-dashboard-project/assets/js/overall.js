@@ -62,7 +62,11 @@ let assignValue=async()=>{
   await fetchContest();
   await getDailySubmissions(useridElement[0].innerText.trim());
   await assignContest();
-  await updateHeatmap(dailySubmissions); 
+  await updateHeatmap(dailySubmissions);
+  
+  // Update charts
+
+  
 }
 async function getDailySubmissions(handle) {
   try {
@@ -125,8 +129,8 @@ let fetchContest = async () => {
       contestList.appendChild(li);
   });
 
-  
 };
+
 let assignContest=async()=>{
   let cur = await fetch(url5);
   let data = await cur.json();
