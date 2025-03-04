@@ -5,143 +5,131 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Codeforces Dashboard</title>
   <link rel="icon" href="assets/images/sidebar.jpg" type="image/jpeg">
-  <!-- Link to the Codeforces CSS file -->
+  <link rel="icon" href="assets/images/sidebar.png" type="image/jpeg" />
+  <!-- Existing CSS (we'll provide the updated version separately) -->
   <link rel="stylesheet" href="assets/css/codeforces.css" />
-  <link
-  href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css"
-  rel="stylesheet"
-/>
+  <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet"/>
+  
+  <!-- Chart.js (for Doughnut & Bar charts) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- ApexCharts (for Rating History line chart) -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 <body>
-
-    <!-- SIDEBAR -->
-    <nav class="sidebar" id="sidebar">
-      <header>
-        <div class="image-text">
-      <span class="image">
-        <img
-        src="assets/images/sidebar.png"
-        alt="sidebar Icon"
-        class="nav-icon"
-      />
-      </span>
-      <div class="text logo-text">
-      <span class="user-handle">samudra038</span>
+  <!-- ===== SIDEBAR (Unchanged) ===== -->
+  <nav class="sidebar" id="sidebar">
+    <header>
+      <div class="image-text">
+        <span class="image">
+          <img src="assets/images/sidebar.png" alt="sidebar Icon" class="nav-icon" />
+        </span>
+        <div class="text logo-text">
+          <span class="user-handle">samudra038</span>
+        </div>
+      </div>
+      <i class="bx bx-chevron-right toggle"></i>
+    </header>
+    <div class="menu-bar">
+      <div class="menu">
+        <ul class="nav-links">
+          <li>
+            <a href="overall.html">
+              <img src="assets/images/over.png" alt="Overall Icon" class="nav-icon" />
+              <span class="text logo-text">Overall</span>
+            </a>
+          </li>
+          <li>
+            <a href="LeetCode.html">
+              <img src="assets/images/lc.png" alt="LeetCode Icon" class="nav-icon" />
+              <span class="text logo-text">LeetCode</span>
+            </a>
+          </li>
+          <li>
+            <a href="codeforces.html" class="active">
+              <img src="assets/images/cf.png" alt="Codeforces Icon" class="nav-icon" />
+              <span class="text logo-text">Codeforces</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="bottom-content">
+        <li>
+          <a href="#">
+            <i class="bx bx-log-out icon"></i>
+            <span class="text nav-text">Logout</span>
+          </a>
+        </li>
+        <li class="mode">
+          <div class="sun-moon">
+            <i class="bx bx-moon icon moon"></i>
+            <i class="bx bx-sun icon sun"></i>
+          </div>
+          <span class="mode-text text">Dark mode</span>
+          <div class="toggle-switch">
+            <span class="switch"></span>
+          </div>
+        </li>
       </div>
     </div>
-    <i class="bx bx-chevron-right toggle"></i>
-  </header>
-  <div class="menu-bar">
-    <div class="menu">
-      <ul class="nav-links">
-        <li>
-          <a href="overall.html">
-            <img
-              src="assets/images/over.png"
-              alt="Overall Icon"
-              class="nav-icon"
-            />
-            <span class="text logo-text">Overall</span>
-          </a>
-        </li>
-        <li>
-          <a href="LeetCode.html" class="active">
-            <img
-              src="assets/images/lc.png"
-              alt="LeetCode Icon"
-              class="nav-icon"
-            />
-            <span class="text logo-text">LeetCode</span>
-          </a>
-        </li>
-        <li>
-          <a href="codeforces.html">
-            <img
-              src="assets/images/cf.png"
-              alt="Codeforces Icon"
-              class="nav-icon"
-            />
-            <span class="text logo-text">Codeforces</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div class="bottom-content">
-      <li>
-        <a href="#">
-          <i class="bx bx-log-out icon"></i>
-          <span class="text nav-text">Logout</span>
-        </a>
-      </li>
-      <li class="mode">
-        <div class="sun-moon">
-          <i class="bx bx-moon icon moon"></i>
-          <i class="bx bx-sun icon sun"></i>
-        </div>
-        <span class="mode-text text">Dark mode</span>
-        <div class="toggle-switch">
-          <span class="switch"></span>
-        </div>
-      </li>
-    </div>
-  </div>
-    </nav>
+  </nav>
 
-  <!-- MAIN CONTENT -->
+  <!-- ===== MAIN CONTENT ===== -->
   <main class="main-content">
     <header>
       <h1>Codeforces Dashboard</h1>
-      <!-- Rating Info (Codeforces-style metrics) -->
-      <div class="rating-info">
-        <div class="rating">
-          <h3>Current Rating</h3>
-          <p id="current-rating">--</p>
+      <div class="rating-summary">
+        <div class="metric">
+          <span class="label">Current Rating</span>
+          <span class="value" id="current-rating">--</span>
         </div>
-        <div class="max-rating">
-          <h3>Max Rating</h3>
-          <p id="max-rating">--</p>
+        <div class="metric">
+          <span class="label">Max Rating</span>
+          <span class="value" id="max-rating">--</span>
         </div>
-        <div class="user-rank">
-          <h3>Rank</h3>
-          <p id="user-rank">--</p>
+        <div class="metric">
+          <span class="label">Rank</span>
+          <span class="value" id="user-rank">--</span>
         </div>
-        <div class="contests-participated">
-          <h3>Contests</h3>
-          <p id="contests-participated">--</p>
+        <div class="metric">
+          <span class="label">Contests</span>
+          <span class="value" id="contests-participated">--</span>
         </div>
       </div>
     </header>
-
-    <!-- STATS SECTION -->
-    <section class="stats">
-      <div class="stat-card">
-        <h3>Div. 1 Contests</h3>
-        <p id="div1-contests">--</p>
-      </div>
-      <div class="stat-card">
-        <h3>Div. 2 Contests</h3>
-        <p id="div2-contests">--</p>
-      </div>
-      <div class="stat-card">
-        <h3>Div. 3 Contests</h3>
-        <p id="div3-contests">--</p>
-      </div>
+    <section class="additional-stats">
       <div class="stat-card">
         <h3>Problems Solved</h3>
         <p id="problems-solved">--</p>
       </div>
+      <div class="stat-card">
+        <h3>Total Submissions</h3>
+        <p id="total-submissions">--</p>
+      </div>
+      <div class="stat-card">
+        <h3>Accuracy</h3>
+        <p id="accuracy">--</p>
+      </div>
     </section>
-
-    <!-- CHART SECTION: Rating History -->
-    <section class="chart-section">
-      <h2>Rating History
-        <h3 id="anshulcontest"></h3>
-      </h2>
-      <canvas id="ratingHistoryChart" width="400" height="200"></canvas>
+    <section class="stats-charts">
+      <!-- Replaced the old canvas with an ApexCharts container -->
+      <div class="chart-container">
+        <h2>Rating History</h2>
+        <div id="apexRatingChart" style="width: 100%; height: 100%;"></div>
+      </div>
+      <div class="chart-container">
+        <h2>Submission Distribution</h2>
+        <canvas id="submissionChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <h2>Contest Participation</h2>
+        <canvas id="contestChart"></canvas>
+      </div>
     </section>
+  
+    
   </main>
 
-  <!-- Link to the Codeforces JavaScript file -->
+  <!-- Your custom JS file (updated to use ApexCharts for the line chart) -->
   <script src="assets/js/codeforces.js"></script>
 </body>
 </html>
