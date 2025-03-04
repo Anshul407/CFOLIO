@@ -1,36 +1,34 @@
-
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+/* ===== Global Styles ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: "Poppins", sans-serif; /* For a consistent look across the dashboard */
 }
 
 :root {
-  --sidebar-width: 250px; /* Full width when expanded */
-  --sidebar-closed-width: 88px; /* Width when sidebar is closed */
-  --transition-speed: 0.3s;
-  /* ===== Colors ===== */
-  --body-color: #f3f4f6;       /* Light gray background for the entire page */
-  --sidebar-color: #ffffff;     /* Clean white sidebar */
-  --primary-color: #ff0000;     /* Subtle neutral for hover backgrounds, etc. */
-  --primary-color-light: #f9fafb; /* Even lighter neutral for toggles, etc. */
-  --toggle-color: #ccc;         /* Slider track color */
-  --text-color: #007bff;
-  --accent-color: #ff0000; /* Codeforces red */
-  --card-bg-color: #333333;
-  /* ====== Transition ====== */
+  /* Sidebar widths */
+  --sidebar-width: 250px;
+  --sidebar-closed-width: 88px;
+
+  /* Transition speeds */
   --transition-speed: 0.3s;
   --tran-03: all 0.3s ease;
   --tran-04: all 0.3s ease;
   --tran-05: all 0.3s ease;
-}
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  /* Light Mode Colors */
+  --body-color: #f3f4f6;
+  --sidebar-color: #ffffff;
+  --primary-color: #ff0000;
+  --primary-color-light: #f9fafb;
+  --toggle-color: #ccc;
+  --text-color: #007bff;
+  --accent-color: #ff0000; /* Codeforces red in light mode */
+  --card-bg-color: #ffffff;
+  --card-shadow: rgba(0, 0, 0, 0.1);
 }
 
 body {
@@ -38,23 +36,25 @@ body {
   background-color: var(--body-color);
   transition: var(--tran-05);
 }
+
 ::selection {
   background-color: var(--primary-color);
   color: #fff;
 }
+
 body.dark {
+  /* Dark Mode Colors */
   --body-color: #18191a;
   --sidebar-color: #242526;
   --primary-color: #3a3b3c;
   --primary-color-light: #3a3b3c;
   --toggle-color: #fff;
   --text-color: #CCCCCC;
-  --accent-color: #e86b6b; /* Codeforces red */
+  --accent-color: #e86b6b; /* Codeforces red in dark mode */
   --card-bg-color: #333333;
+  --card-shadow: rgba(0, 0, 0, 0.4);
 }
-
-
-/* ===== Sidebar ===== */
+/* ===== Sidebar (Updated from Script B) ===== */
 .sidebar {
   position: fixed;
   top: 0;
@@ -80,11 +80,13 @@ body.dark {
   align-items: center;
   margin-top: 10px;
 }
+
 .sidebar header .image,
 .sidebar .icon {
   min-width: 60px;
   border-radius: 6px;
 }
+
 .sidebar .icon {
   min-width: 60px;
   border-radius: 6px;
@@ -94,51 +96,61 @@ body.dark {
   justify-content: center;
   font-size: 20px;
 }
+
 .sidebar .text,
 .sidebar .icon {
   color: var(--text-color);
   transition: var(--tran-03);
 }
+
 .sidebar .text {
   font-size: 17px;
   font-weight: 500;
   white-space: nowrap;
   opacity: 1;
 }
+
 .sidebar.close .text {
   display: none;
 }
-/* =========================== */
+
 .sidebar header {
   position: relative;
 }
+
 .sidebar header .image-text {
   display: flex;
   align-items: center;
 }
+
 .sidebar header .logo-text {
   display: flex;
   flex-direction: column;
 }
+
 header .image-text .name {
   margin-top: 2px;
   font-size: 18px;
   font-weight: 600;
 }
+
 header .image-text .profession {
   font-size: 16px;
   margin-top: -2px;
   display: block;
 }
+
 .sidebar header .image {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .sidebar header .image img {
   width: 40px;
   border-radius: 6px;
 }
+
 .sidebar header .toggle {
   position: absolute;
   top: 50%;
@@ -156,38 +168,45 @@ header .image-text .profession {
   cursor: pointer;
   transition: var(--tran-05);
 }
+
 body.dark .sidebar header .toggle {
   color: var(--text-color);
 }
+
 .sidebar.close .toggle {
   transform: translateY(-50%) rotate(0deg);
 }
+
 .sidebar .menu {
   margin-top: 40px;
 }
+
 .sidebar li a {
   list-style: none;
   height: 100%;
   background-color: transparent;
   display: flex;
   align-items: center;
-  height: 100%;
   width: 100%;
   border-radius: 6px;
   text-decoration: none;
   transition: var(--tran-03);
 }
+
 .sidebar li a:hover {
   background-color: var(--primary-color);
 }
+
 .sidebar li a:hover .icon,
 .sidebar li a:hover .text {
   color: var(--sidebar-color);
 }
+
 body.dark .sidebar li a:hover .icon,
 body.dark .sidebar li a:hover .text {
   color: var(--text-color);
 }
+
 .sidebar .menu-bar {
   height: calc(100% - 55px);
   display: flex;
@@ -195,31 +214,39 @@ body.dark .sidebar li a:hover .text {
   justify-content: space-between;
   overflow-y: scroll;
 }
+
 .menu-bar::-webkit-scrollbar {
   display: none;
 }
+
 .sidebar .menu-bar .mode {
   border-radius: 6px;
   background-color: var(--primary-color-light);
   position: relative;
   transition: var(--tran-05);
 }
+
 .menu-bar .mode .sun-moon {
   height: 50px;
   width: 60px;
 }
+
 .mode .sun-moon i {
   position: absolute;
 }
+
 .mode .sun-moon i.sun {
   opacity: 0;
 }
+
 body.dark .mode .sun-moon i.sun {
   opacity: 1;
 }
+
 body.dark .mode .sun-moon i.moon {
   opacity: 0;
 }
+
 .menu-bar .bottom-content .toggle-switch {
   position: absolute;
   right: 0;
@@ -231,6 +258,7 @@ body.dark .mode .sun-moon i.moon {
   border-radius: 6px;
   cursor: pointer;
 }
+
 .toggle-switch .switch {
   position: relative;
   height: 22px;
@@ -239,6 +267,7 @@ body.dark .mode .sun-moon i.moon {
   background-color: var(--toggle-color);
   transition: var(--tran-05);
 }
+
 .switch::before {
   content: "";
   position: absolute;
@@ -251,12 +280,14 @@ body.dark .mode .sun-moon i.moon {
   background-color: var(--sidebar-color);
   transition: var(--tran-04);
 }
+
 body.dark .switch::before {
   left: 20px;
 }
+
+
 .home {
   position: absolute;
-  top: 0;
   top: 0;
   left: 250px;
   height: 100vh;
@@ -264,38 +295,38 @@ body.dark .switch::before {
   background-color: var(--body-color);
   transition: var(--tran-05);
 }
+
 .home .text {
   font-size: 30px;
   font-weight: 500;
   color: #2e2e2e;
   padding: 12px 60px;
 }
+
 .sidebar.close ~ .home {
   left: 78px;
   height: 100vh;
   width: calc(100% - 78px);
 }
+
 body.dark .home .text {
   color: #ccc;
 }
-/* Tidy up the logo in the header (if you decide to use an image there) */
+
 .image-text .image img {
   width: 50px;
   height: 50px;
   object-fit: contain;
-  display: block; /* Ensures it doesn’t overflow or overlap */
+  display: block;
 }
-/* Tidy up the nav icons for Overall, LeetCode, and Codeforces */
+
 .nav-links li a .nav-icon {
   width: 24px;
   height: 24px;
-  margin-right: 12px; /* Space between icon and text */
+  margin-right: 12px;
   object-fit: contain;
 }
-.sidebar .nav-icon {
-  min-width: 60px;
-  border-radius: 6px;
-}
+
 .sidebar .nav-icon {
   min-width: 60px;
   border-radius: 6px;
@@ -305,20 +336,18 @@ body.dark .home .text {
   justify-content: center;
   font-size: 20px;
 }
+
 .sidebar .text,
 .sidebar .nav-icon {
   color: var(--text-color);
   transition: var(--tran-03);
 }
 
-/* ----- Main Content Styles ----- */
+/* ===== MAIN CONTENT (Updated) ===== */
 .main-content {
-  /* Default state for closed sidebar */
   margin-left: var(--sidebar-closed-width);
-  width: calc(100% - var(--sidebar-closed-width));
   padding: 20px;
-  transition: margin-left var(--transition-speed) ease,
-    width var(--transition-speed) ease;
+  transition: margin-left var(--transition-speed) ease, width var(--transition-speed) ease;
 }
 
 /* When the sidebar is expanded */
@@ -327,135 +356,138 @@ body.dark .home .text {
   width: calc(100% - var(--sidebar-width));
 }
 
-/* HEADER */
-header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;  /* left (title), center (username), right (rating-info) */
-  align-items: center;             /* vertically center items */
+/* Header within Main Content */
+.main-content header {
   margin-bottom: 20px;
 }
 
-/* HEADER CONTAINER */
-header.header-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin-bottom: 30px;
-}
-
-/* Left side: Logo and Title */
-.left-header {
-  display: flex;
-  align-items: center;
-}
-
-
-/* The username link */
-.middle-username a {
-  position: relative;
-  display: inline-block;    /* needed for the underline effect */
+.main-content h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
   color: var(--accent-color);
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 1.1rem;
-  transition: color 0.3s ease, transform 0.3s ease;
 }
 
-/* Animated underline using a pseudo-element */
-.middle-username a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -2px;            /* slightly below the text */
-  width: 0;
-  height: 2px;
-  background-color: var(--accent-color);
-  transition: width 0.3s ease;
-}
-
-/* Hover effect: text changes color, link scales, underline expands */
-.middle-username a:hover {
-  color: #fff;             /* or pick another highlight color */
-  transform: scale(1.05);
-}
-
-.middle-username a:hover::after {
-  width: 100%;             /* animate underline from left to right */
-}
-
-/* RATING INFO (RIGHT SIDE) */
-.rating-info {
+/* Rating Summary (Current Rating, Max Rating, etc.) */
+.rating-summary {
   display: flex;
-  gap: 20px;
   flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-around;
 }
 
-.rating-info > div {
-  background-color: var(--card-bg-color);
+.metric {
+  background: var(--card-bg-color);
+  padding: 15px;
   border-radius: 8px;
-  padding: 10px 15px;
+  box-shadow: 0 2px 5px var(--card-shadow);
+  flex: 1;
   text-align: center;
-  min-width: 100px;
+  min-width: 150px;
 }
 
-.rating-info h3 {
+.metric .label {
   font-size: 0.9rem;
-  margin-bottom: 4px;
-  color: #bbbbbb;
+  color: #888;
 }
 
-.rating-info p {
-  font-size: 1rem;
+.metric .value {
+  font-size: 1.5rem;
+  font-weight: bold;
   color: var(--accent-color);
 }
 
-
-/* STATS SECTION */
-.stats {
+/* Stats Charts Section: Use a grid for better responsiveness */
+.stats-charts {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
-  margin-bottom: 30px;
+  margin: 20px 0;
+}
+
+.stats-charts {
+  display: grid;
+  /* Use a grid to layout the charts side-by-side and wrap on smaller screens */
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+  margin: 20px 0;
+  /* Ensures each grid item (chart container) aligns at the top, 
+     rather than stretching to match the tallest chart. */
+  align-items: start;
+}
+
+.chart-container {
+  background: var(--card-bg-color);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 5px var(--card-shadow);
+  /* We fix or cap the container height so the charts don't keep growing. */
+  height: 505px;          /* You can adjust this value to suit your layout. */
+  display: flex;
+  flex-direction: column; /* Stacks the heading and chart vertically */
+  overflow: hidden;       /* Hide anything that might overflow */
+}
+
+.chart-container h2 {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: var(--accent-color);
+}
+
+/* For Chart.js canvases */
+.chart-container canvas {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 425px; /* Adjust as desired */
+}
+
+
+/* If you used a <div> for ApexCharts (e.g., #apexRatingChart), 
+   give it the same 'flex: 1' so it fills the container. */
+#apexRatingChart {
+  width: 100%;
+  flex: 1;         /* This ensures ApexCharts fills the container's remaining space */
+}
+
+
+/* Additional Stats Section (Problems Solved, Total Submissions, Accuracy) */
+.additional-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
 }
 
 .stat-card {
-  background-color: var(--card-bg-color);
-  padding: 20px;
+  background: var(--card-bg-color);
+  padding: 15px;
   border-radius: 8px;
+  flex: 1;
+  min-width: 150px;
   text-align: center;
+  box-shadow: 0 2px 5px var(--card-shadow);
 }
 
 .stat-card h3 {
-  font-size: 0.9rem;
-  margin-bottom: 10px;
-  color: #bbbbbb;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  color: #888;
 }
 
 .stat-card p {
   font-size: 1.4rem;
-  margin: 0;
+  font-weight: bold;
   color: var(--accent-color);
 }
 
-/* CHART SECTION */
-.chart-section {
-  background-color: var(--card-bg-color);
-  padding: 20px;
-  border-radius: 8px;
-}
-
-.chart-section h2 {
-  font-size: 1.1rem;
-  margin-bottom: 20px;
-}
-
-/* RESPONSIVE */
+/* Responsive Adjustments */
 @media screen and (max-width: 768px) {
-
-  header {
+  .rating-summary {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+  }
+  .additional-stats {
+    flex-direction: column;
+    align-items: center;
   }
 }
